@@ -8,7 +8,7 @@ class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.image('sky', 'assets/sky.png');
-        this.load.image('startButton', 'assets/star.png'); // Um botão simples como imagem
+        this.load.image('startButton', 'assets/play.png'); // Um botão simples como imagem
     }
 
     create() {
