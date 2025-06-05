@@ -8,13 +8,14 @@ class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.image('sky', 'assets/sky.png');
-        this.load.image('startButton', 'assets/play.png'); // Um botão simples como imagem
+        this.load.image('startButton', 'assets/play.png'); // Um botão simples como imagem]
+        this.load.image('conguitoLogo', 'assets/logo.png')
     }
 
     create() {
         this.add.image(400, 300, 'sky');
-        this.add.text(400, 150, 'Meu Jogo Plataforma', { fontSize: '48px', fill: '#fff' }).setOrigin(0.5);
-
+        this.add.image(400, 150, 'conguitoLogo').setOrigin(0.5);
+        
         const startButton = this.add.image(400, 300, 'startButton').setInteractive();
         startButton.setScale(1.5);
 
