@@ -96,6 +96,14 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
 
         this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
+
+
+        //bomba no começa em posição aleatoria
+        const initialBombX = Phaser.Math.Between(0, 800); // Posição X aleatória
+        const bomb = this.bombs.create(initialBombX, 16, 'bomb'); // Y=16 para aparecer no topo
+        bomb.setBounce(1);
+        bomb.setCollideWorldBounds(true);
+        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
     }
 
     update() {
