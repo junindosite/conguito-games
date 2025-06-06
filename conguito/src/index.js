@@ -1,29 +1,41 @@
 import Phaser from 'phaser';
 
 // 🎬 Cena do Menu
-class MenuScene extends Phaser.Scene {
+export default class MenuScene extends Phaser.Scene {
     constructor() {
         super({ key: 'MenuScene' });
     }
 
     preload() {
         this.load.image('sky', 'assets/sky.png');
-        this.load.image('startButton', 'assets/play.png'); // Um botão simples como imagem]
-        this.load.image('conguitoLogo', 'assets/logo.png')
+        this.load.image('startButton', 'assets/play.png'); // Um botão simples como imagem
+        this.load.image('conguitoLogo', 'assets/logo.png'); // Usado como a logo principal
+        this.load.image('chao', 'assets/chaomenu.png');
+        this.load.image('tree', 'assets/tree.png');
     }
 
     create() {
+        // Fundo e cenário
         this.add.image(400, 300, 'sky');
-        this.add.image(400, 150, 'conguitoLogo').setOrigin(0.5);
-        
-        const startButton = this.add.image(400, 300, 'startButton').setInteractive();
-        startButton.setScale(1.5);
+        // Chão
+         const ground = this.add.tileSprite(400, 510, 800, 48, 'chao');
+        ground.setOrigin(0.5, 1);   
+
+        // Árvore (posicionada no canto inferior direito, ajustada para o chão)
+         const tree = this.add.image(830, 510, 'tree') // x: lado direito, y: meio vertical
+       .setOrigin(1, 1) // canto inferior direito como base
+       .setScale(0.5);
+         this.add.image(400, 100, 'conguitoLogo').setScale(0.8);
+        // Botão de Iniciar Jogo
+        const startButton = this.add.image(400, 250, 'startButton') .setInteractive();
+        startButton.setScale(0.2);
 
         startButton.on('pointerdown', () => {
             this.scene.start('GameScene');
         });
     }
 }
+
 
 // 🎮 Cena Principal do Jogo
 class GameScene extends Phaser.Scene {
