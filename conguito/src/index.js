@@ -139,7 +139,13 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.bombs, platforms);
         this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
 
-        this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
+       this.scoreText = this.add.text(16, 16, 'Score: 0', { 
+       fontSize: '32px', 
+       fill: '#fff', 
+       stroke: '#000', 
+       strokeThickness: 3 
+    });
+
 
         // Avião no topo da tela
         this.aviao = this.physics.add.sprite(400, 40, 'aviao').setScale(0.7);
