@@ -48,14 +48,14 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './index.html'
     }),
-    new CopyPlugin({
-      patterns: [
-        {
-          from: path.resolve(__dirname, 'assets'),
-          to: path.resolve(__dirname, 'build/assets')
-        }
-      ],
-    }),
+   new CopyPlugin({
+  patterns: [
+    {
+      from: path.resolve(__dirname, 'assets'),
+      to: path.resolve(__dirname, 'build/assets')
+    }
+  ],
+}),
     new webpack.ProvidePlugin({
       process: 'process/browser' 
     })
