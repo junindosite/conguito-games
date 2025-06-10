@@ -117,8 +117,8 @@ class GameScene extends Phaser.Scene {
         this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
 
         // Avião no topo da tela
-        this.aviao = this.physics.add.sprite(400, 100, 'aviao').setScale(0.7);
-        this.aviao.setVelocityX(100);
+        this.aviao = this.physics.add.sprite(400, 40, 'aviao').setScale(0.7);
+        this.aviao.setVelocityX(150);
         this.aviao.setCollideWorldBounds(true);
         this.aviao.setBounce(1, 0);
         this.aviao.body.allowGravity = false; // Avião não é afetado pela gravidade
@@ -148,13 +148,13 @@ class GameScene extends Phaser.Scene {
     update() {
 
         ///////////Aviao Voando////////////////
-         this.aviao.y = 100; // Mantém o avião em uma só altura
+         this.aviao.y = 40; // Mantém o avião em uma só altura
 
         if (this.aviao.body.blocked.right) {
-            this.aviao.setVelocityX(-100);
+            this.aviao.setVelocityX(-150);
             this.aviao.setFlipX(true);
         } else if (this.aviao.body.blocked.left) {
-            this.aviao.setVelocityX(100);
+            this.aviao.setVelocityX(150);
             this.aviao.setFlipX(false);
         }
         //////////////////////////////////
