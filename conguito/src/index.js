@@ -10,21 +10,19 @@ export default class MenuScene extends Phaser.Scene {
         this.load.image('sky', 'assets/sky.png');
         this.load.image('startButton', 'assets/play.png'); // Um botão simples como imagem
         this.load.image('conguitoLogo', 'assets/logo.png'); // Usado como a logo principal
-        this.load.image('chao', 'assets/chaomenu.png');
         this.load.image('tree', 'assets/tree.png');
     }
 
     create() {
         // Fundo e cenário
-        this.add.image(400, 300, 'sky');
-        // Chão
-         const ground = this.add.tileSprite(400, 510, 800, 48, 'chao');
-        ground.setOrigin(0.5, 1);   
+     this.add.image(0, 0, 'sky')
+    .setOrigin(0) // alinha ao canto superior esquerdo
+    .setDisplaySize(this.scale.width, this.scale.height); // redimensiona para preencher 
+       
+          
 
         // Árvore (posicionada no canto inferior direito, ajustada para o chão)
-         const tree = this.add.image(830, 510, 'tree') // x: lado direito, y: meio vertical
-       .setOrigin(1, 1) // canto inferior direito como base
-       .setScale(0.5);
+        
          this.add.image(400, 100, 'conguitoLogo').setScale(0.8);
         // Botão de Iniciar Jogo
         const startButton = this.add.image(400, 250, 'startButton') .setInteractive();
@@ -58,7 +56,9 @@ class GameScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(400, 300, 'sky');
+        this.add.image(0, 0, 'sky')
+        .setOrigin(0) // alinha ao canto superior esquerdo
+        .setDisplaySize(this.scale.width, this.scale.height); // redimensiona para preencher
 
         this.score = 0;
         this.gameOver = false;
@@ -215,7 +215,7 @@ class GameOverScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(400, 300, 'sky');
+        this.add.image(800, 300, 'sky');
         this.add.text(400, 200, 'GAME OVER', { fontSize: '64px', fill: '#ff0000' }).setOrigin(0.5);
         this.add.text(400, 300, `Score: ${this.finalScore}`, { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
         this.add.text(400, 400, 'Clique para reiniciar', { fontSize: '24px', fill: '#fff' }).setOrigin(0.5);
@@ -228,8 +228,8 @@ class GameOverScene extends Phaser.Scene {
 
 const config = {
     type: Phaser.AUTO,
-    width: 800,
-    height: 600,
+    width: 1280,
+    height: 720,
     backgroundColor: '#87ceeb',
     physics: {
         default: 'arcade',
