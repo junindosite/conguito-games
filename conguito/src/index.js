@@ -33,6 +33,10 @@ export default class MenuScene extends Phaser.Scene {
         startButton.on('pointerdown', () => {
             this.scene.start('GameScene');
         });
+
+
+
+
     }
 }
 
@@ -113,11 +117,24 @@ class GameScene extends Phaser.Scene {
         this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
 
         // Avião no topo da tela
-           
+        this.aviao = this.physics.add.sprite(400, 100, 'aviao');
+        this.aviao.setVelocityX(100);
+        this.aviao.setCollideWorldBounds(true);
+        this.aviao.setBounce(1, 0);
+        this.aviao.body.allowGravity = false; // Avião não é afetado pela gravidade
 
        // Timer que solta bombas a cada 2 segundos
- 
-     
+        this.time.addEvent({
+         delay: 2000,
+        loop: true,
+        callback: () => {
+        const bomb = this.bombs.create(this.aviao.x, this.aviao.y + 20, 'bomb');
+        bomb.setBounce(1);
+        bomb.setCollideWorldBounds(true);
+        bomb.setVelocity(Phaser.Math.Between(-100, 100), 200); // queda com leve variação horizontal
+            }
+        });
+        ///////////////////////
 
 
         //bomba no começa em posição aleatoria
@@ -129,6 +146,18 @@ class GameScene extends Phaser.Scene {
     }
 
     update() {
+
+        ///////////Aviao Voando////////////////
+         this.aviao.y = 100; // Mantém o avião em uma só altura
+
+        if (this.aviao.body.blocked.right) {
+            this.aviao.setVelocityX(-100);
+            this.aviao.setFlipX(true);
+        } else if (this.aviao.body.blocked.left) {
+            this.aviao.setVelocityX(100);
+            this.aviao.setFlipX(false);
+        }
+        //////////////////////////////////
         if (this.gameOver) {
             return;
         }
