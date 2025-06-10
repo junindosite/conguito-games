@@ -28,6 +28,14 @@ export default class MenuScene extends Phaser.Scene {
         const startButton = this.add.image(400, 250, 'startButton')
             .setInteractive()
             .setScale(0.2);
+            this.tweens.add({
+            targets: startButton,
+            alpha: 0.3,
+            duration: 800,
+            ease: 'Linear',
+            yoyo: true,
+            repeat: -1
+        });
 
         startButton.on('pointerdown', () => {
             if (this.menuMusic.isPlaying) {
