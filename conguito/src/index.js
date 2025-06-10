@@ -1,4 +1,6 @@
 import Phaser from 'phaser';
+import BotaoSom from './SoundButton';
+
 
 // 🎬 Cena do Menu
 export default class MenuScene extends Phaser.Scene {
@@ -10,33 +12,46 @@ export default class MenuScene extends Phaser.Scene {
         this.load.image('sky', 'assets/sky.png');
         this.load.image('startButton', 'assets/play.png'); // Um botão simples como imagem
         this.load.image('conguitoLogo', 'assets/logo.png'); // Usado como a logo principal
-        this.load.image('tree', 'assets/tree.png');
+        this.load.audio('menuMusic', 'assets/musica/menuMusic.mp3');
     }
 
     create() {
-        // Fundo e cenário
-     this.add.image(0, 0, 'sky')
-    .setOrigin(0) // alinha ao canto superior esquerdo
-    .setDisplaySize(this.scale.width, this.scale.height); // redimensiona para preencher 
-       
-          
+        // Fundo
 
-        // Árvore (posicionada no canto inferior direito, ajustada para o chão)
-        
-         this.add.image(400, 100, 'conguitoLogo').setScale(0.8);
-        // Botão de Iniciar Jogo
-        const startButton = this.add.image(400, 250, 'startButton') .setInteractive();
-        startButton.setScale(0.2);
+        this.add.image(0, 0, 'sky')
+            .setOrigin(0)
+            .setDisplaySize(this.scale.width, this.scale.height);
+
+        // Logo e botão nas posições fixas
+        this.add.image(400, 100, 'conguitoLogo').setScale(0.8);
+
+        const startButton = this.add.image(400, 250, 'startButton')
+            .setInteractive()
+            .setScale(0.2);
 
         startButton.on('pointerdown', () => {
+            if (this.menuMusic.isPlaying) {
+                this.menuMusic.stop();
+            }
             this.scene.start('GameScene');
         });
 
+        // Tocar música direto (pode ser bloqueado por navegador)
+        this.menuMusic = this.sound.add('menuMusic', {
+            loop: true,
+            volume: 0.3
+        });
 
+        this.menuMusic.play();
 
+          //Isso cria o botão de som no canto inferior direito da cena atual, permitindo 
+          //    que o jogador clique para mutar/desmutar o áudio da cena.
+        this.botaoSom = new BotaoSom(this);
 
     }
 }
+
+
 
 
 // 🎮 Cena Principal do Jogo
@@ -57,8 +72,8 @@ class GameScene extends Phaser.Scene {
 
     create() {
         this.add.image(0, 0, 'sky')
-        .setOrigin(0) // alinha ao canto superior esquerdo
-        .setDisplaySize(this.scale.width, this.scale.height); // redimensiona para preencher
+            .setOrigin(0) // alinha ao canto superior esquerdo
+            .setDisplaySize(this.scale.width, this.scale.height); // redimensiona para preencher
 
         this.score = 0;
         this.gameOver = false;
@@ -123,24 +138,25 @@ class GameScene extends Phaser.Scene {
         this.aviao.setBounce(1, 0);
         this.aviao.body.allowGravity = false; // Avião não é afetado pela gravidade
 
-       // Timer que solta bombas a cada 2 segundos
+        // Timer que solta bombas a cada 2 segundos
         this.time.addEvent({
-         delay: 5000,
-        loop: true,
-        callback: () => {
-        const bomb = this.bombs.create(this.aviao.x, this.aviao.y + 20, 'bomb');
-        bomb.setBounce(1);
-        bomb.setCollideWorldBounds(true);
-        bomb.setVelocity(Phaser.Math.Between(-100, 100), 200); // queda com leve variação horizontal
+            delay: 5000,
+            loop: true,
+            callback: () => {
+                const bomb = this.bombs.create(this.aviao.x, this.aviao.y + 20, 'bomb');
+                bomb.setBounce(1);
+                bomb.setCollideWorldBounds(true);
+                bomb.setVelocity(Phaser.Math.Between(-100, 100), 200); // queda com leve variação horizontal
             }
         });
+        this.botaoSom = new BotaoSom(this);
 
     }
 
     update() {
 
         ///////////Aviao Voando////////////////
-         this.aviao.y = 40; // Mantém o avião em uma só altura
+        this.aviao.y = 40; // Mantém o avião em uma só altura
 
         if (this.aviao.body.blocked.right) {
             this.aviao.setVelocityX(-150);
@@ -223,8 +239,13 @@ class GameOverScene extends Phaser.Scene {
         this.input.on('pointerdown', () => {
             this.scene.start('MenuScene');
         });
+       this.botaoSom = new BotaoSom(this);
     }
 }
+
+window.configuracoesJogo = {
+  somAtivo: true
+};
 
 const config = {
     type: Phaser.AUTO,
