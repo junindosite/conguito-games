@@ -125,7 +125,7 @@ class GameScene extends Phaser.Scene {
 
        // Timer que solta bombas a cada 2 segundos
         this.time.addEvent({
-         delay: 2000,
+         delay: 5000,
         loop: true,
         callback: () => {
         const bomb = this.bombs.create(this.aviao.x, this.aviao.y + 20, 'bomb');
