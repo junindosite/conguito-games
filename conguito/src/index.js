@@ -78,6 +78,9 @@ class GameScene extends Phaser.Scene {
         this.score = 0;
         this.gameOver = false;
 
+        this.scoreVelocidade = 150; // Variavel que vai determinar a velocidade do aviao; Começa em 150 ja!!!
+
+
         const platforms = this.physics.add.staticGroup();
         platforms.create(400, 568, 'ground').setScale(2).refreshBody();
         platforms.create(600, 400, 'ground');
@@ -133,7 +136,8 @@ class GameScene extends Phaser.Scene {
 
         // Avião no topo da tela
         this.aviao = this.physics.add.sprite(400, 40, 'aviao').setScale(0.7);
-        this.aviao.setVelocityX(150);
+        this.velocidadeBaseAviao = 150;
+        this.aviao.setVelocityX(this.velocidadeBaseAviao);
         this.aviao.setCollideWorldBounds(true);
         this.aviao.setBounce(1, 0);
         this.aviao.body.allowGravity = false; // Avião não é afetado pela gravidade
@@ -158,12 +162,17 @@ class GameScene extends Phaser.Scene {
         ///////////Aviao Voando////////////////
         this.aviao.y = 40; // Mantém o avião em uma só altura
 
+        const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;// Para a soma de velocidade do aviao.
+
         if (this.aviao.body.blocked.right) {
-            this.aviao.setVelocityX(-150);
+            this.aviao.setVelocityX(-velocidadeAtual);
             this.aviao.setFlipX(true);
+            console.log(`Avião indo para ESQUERDA com velocidade: ${-velocidadeAtual}`);
         } else if (this.aviao.body.blocked.left) {
-            this.aviao.setVelocityX(150);
+            this.aviao.setVelocityX(velocidadeAtual);
             this.aviao.setFlipX(false);
+            console.log(`Avião indo para DIREITA com velocidade: ${velocidadeAtual}`);
+
         }
         //////////////////////////////////
         if (this.gameOver) {
@@ -191,6 +200,22 @@ class GameScene extends Phaser.Scene {
 
         this.score += 10;
         this.scoreText.setText('Score: ' + this.score);
+
+        //LOGICA PARA AUMENTO DE VELOCIDADE//
+        const pontosAumentoVelocidade = 50; // A cada 50 pontos, aumenta a velocidade
+        const valorAumentoVelocidade = 10;    // Velocidade aumentada em 10
+
+        if (this.score > 0 && this.score % pontosAumentoVelocidade === 0) {
+            this.scoreVelocidade += valorAumentoVelocidade;
+            console.log(`--- VELOCIDADE DO AVIÃO AUMENTADA! ---`);
+            console.log(`Score atual: ${this.score}`);
+            console.log(`Bônus de velocidade (scoreVelocidade): ${this.scoreVelocidade}`);
+            } else {
+            console.log(`Score atual: ${this.score}. Não é hora de aumentar a velocidade.`);
+            }
+        
+
+        //////////////////////////////////////////////
 
         if (this.stars.countActive(true) === 0) {
             this.stars.children.iterate(function (child) {
