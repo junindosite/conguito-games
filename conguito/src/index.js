@@ -49,6 +49,8 @@ class GameScene extends Phaser.Scene {
         this.load.image('star', 'assets/star.png');
         this.load.image('bomb', 'assets/bomb.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+        this.load.image('aviao', 'assets/aviao.png');
+
     }
 
     create() {
@@ -109,6 +111,13 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
 
         this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '32px', fill: '#000' });
+
+        // Avião no topo da tela
+           
+
+       // Timer que solta bombas a cada 2 segundos
+ 
+     
 
 
         //bomba no começa em posição aleatoria
