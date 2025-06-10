@@ -134,15 +134,7 @@ class GameScene extends Phaser.Scene {
         bomb.setVelocity(Phaser.Math.Between(-100, 100), 200); // queda com leve variação horizontal
             }
         });
-        ///////////////////////
 
-
-        //bomba no começa em posição aleatoria
-        const initialBombX = Phaser.Math.Between(0, 800); // Posição X aleatória
-        const bomb = this.bombs.create(initialBombX, 16, 'bomb'); // Y=16 para aparecer no topo
-        bomb.setBounce(1);
-        bomb.setCollideWorldBounds(true);
-        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
     }
 
     update() {
