@@ -44,8 +44,8 @@ export default class MenuScene extends Phaser.Scene {
 
         this.menuMusic.play();
 
-          //Isso cria o botão de som no canto inferior direito da cena atual, permitindo 
-          //    que o jogador clique para mutar/desmutar o áudio da cena.
+        //Isso cria o botão de som no canto inferior direito da cena atual, permitindo 
+        //    que o jogador clique para mutar/desmutar o áudio da cena.
         this.botaoSom = new BotaoSom(this);
 
     }
@@ -67,6 +67,11 @@ class GameScene extends Phaser.Scene {
         this.load.image('bomb', 'assets/bomb.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
         this.load.image('aviao', 'assets/aviao.png');
+        //precisa adicionar frame de personagem morto!!!!!!!!!!!!!!
+        //ataque tmb !!!!!!!
+
+        //audios
+        this.load.audio('perdeu', 'assets/musica/perdeu.mp3');
 
     }
 
@@ -90,6 +95,8 @@ class GameScene extends Phaser.Scene {
         this.player = this.physics.add.sprite(100, 450, 'dude');
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
+
+        this.jaPerdeu = false;
 
         this.anims.create({
             key: 'left',
@@ -142,7 +149,7 @@ class GameScene extends Phaser.Scene {
         this.aviao.setBounce(1, 0);
         this.aviao.body.allowGravity = false; // Avião não é afetado pela gravidade
 
-        // Timer que solta bombas a cada 2 segundos
+        // Timer que solta bombas a cada 5 segundos
         this.time.addEvent({
             delay: 5000,
             loop: true,
@@ -154,6 +161,8 @@ class GameScene extends Phaser.Scene {
             }
         });
         this.botaoSom = new BotaoSom(this);
+
+
 
     }
 
@@ -210,10 +219,10 @@ class GameScene extends Phaser.Scene {
             console.log(`--- VELOCIDADE DO AVIÃO AUMENTADA! ---`);
             console.log(`Score atual: ${this.score}`);
             console.log(`Bônus de velocidade (scoreVelocidade): ${this.scoreVelocidade}`);
-            } else {
+        } else {
             console.log(`Score atual: ${this.score}. Não é hora de aumentar a velocidade.`);
-            }
-        
+        }
+
 
         //////////////////////////////////////////////
 
@@ -241,8 +250,32 @@ class GameScene extends Phaser.Scene {
 
         this.gameOver = true;
 
-        this.scene.start('GameOverScene', { score: this.score });
+        this.perdeu();
     }
+
+    perdeu() {
+        if (this.jaPerdeu) return;
+        this.jaPerdeu = true;
+
+        // Trocar textura do sprite por outro (sem sumir com ele)
+        this.player.setTexture('morto'); // ← precisa carregar essa imagem no preload
+
+        // Parar a física para o jogador não continuar se mexendo
+        this.player.setVelocity(0, 0);
+        this.player.body.enable = false;
+
+        const somDerrota = this.sound.add('perdeu');
+        somDerrota.play();
+
+        somDerrota.once('complete', () => {
+            this.scene.start('GameOverScene', { score: this.score });
+        });
+    }
+
+
+
+
+
 }
 
 // ☠️ Cena de Game Over
@@ -264,12 +297,12 @@ class GameOverScene extends Phaser.Scene {
         this.input.on('pointerdown', () => {
             this.scene.start('MenuScene');
         });
-       this.botaoSom = new BotaoSom(this);
+        this.botaoSom = new BotaoSom(this);
     }
 }
 
 window.configuracoesJogo = {
-  somAtivo: true
+    somAtivo: true
 };
 
 const config = {

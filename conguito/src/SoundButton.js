@@ -20,6 +20,7 @@ export default class BotaoSom {
     // Adiciona evento de clique para alternar som
     this.botao.on('pointerdown', () => {
       this.alternarSom();
+      console.log("mudando som")
     });
 
     // Aplica o estado atual (mutado ou não)
