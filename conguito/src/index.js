@@ -228,6 +228,7 @@ class GameScene extends Phaser.Scene {
         const pontosAumentoVelocidade = 50; // A cada 50 pontos, aumenta a velocidade
         const valorAumentoVelocidade = 10;    // Velocidade aumentada em 10
 
+
         if (this.score > 0 && this.score % pontosAumentoVelocidade === 0) {
             this.scoreVelocidade += valorAumentoVelocidade;
             console.log(`--- VELOCIDADE DO AVIÃO AUMENTADA! ---`);
