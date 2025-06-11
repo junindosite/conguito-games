@@ -2,6 +2,49 @@ import Phaser from 'phaser';
 import BotaoSom from './SoundButton';
 
 
+/// cena cutscene depois do play
+class CutsceneScene extends Phaser.Scene {
+    constructor() {
+        super({ key: 'CutsceneScene' });
+    }
+
+    preload() {
+        this.load.video('cutscene', 'assets/musica/video/catsine.mp4', 'loadeddata', false, true);
+        this.load.audio('cutsceneAudio', 'assets/musica/catsine.mp3');
+    }
+
+    create() {
+    
+        const video = this.add.video(this.scale.width / 2, this.scale.height / 2, 'cutscene');
+             
+       // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
+        video.setDisplaySize(this.scale.width, this.scale.height)
+ 
+        .setDepth(1).play(); // 'true' = som embutido no vídeo
+
+        const audio = this.sound.add('cutsceneAudio');
+        audio.play();
+
+        // Pular com ENTER
+        this.input.keyboard.once('keydown-ENTER', () => {
+            video.stop();
+            audio.stop();
+            this.scene.start('GameScene');
+        });
+
+        // Ou ir automaticamente para o jogo ao fim do vídeo
+        video.on('complete', () => {
+            audio.stop();
+            this.scene.start('GameScene');
+        });
+        video.on('play', () => console.log('🎥 Vídeo começou'));
+        video.on('complete', () => console.log('✅ Vídeo terminou'));
+        video.on('error', (e) => console.error('❌ Erro no vídeo:', e));
+
+    }
+}
+
+
 // 🎬 Cena do Menu
 export default class MenuScene extends Phaser.Scene {
     constructor() {
@@ -41,7 +84,7 @@ export default class MenuScene extends Phaser.Scene {
             if (this.menuMusic.isPlaying) {
                 this.menuMusic.stop();
             }
-            this.scene.start('GameScene');
+           this.scene.start('CutsceneScene');
         });
 
         // Tocar música direto (pode ser bloqueado por navegador)
@@ -497,7 +540,7 @@ const config = {
             debug: false
         }
     },
-    scene: [MenuScene, GameScene, GameOverScene],
+    scene: [MenuScene, CutsceneScene ,GameScene, GameOverScene],
 
     scale: {
         mode: Phaser.Scale.ENVELOP, // Escala o jogo para caber na tela, mantendo a proporção
