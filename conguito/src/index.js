@@ -430,6 +430,7 @@ class GameOverScene extends Phaser.Scene {
     preload(){
         this.load.image('gameOver', 'assets/logoGameOver.png')
         // IREI MEXER MAIS AINDA
+        this.load.image('return', 'assets/back.png')
 
 
     }
@@ -449,8 +450,6 @@ class GameOverScene extends Phaser.Scene {
         strokeThickness: 3 
     }).setOrigin(0.5);
         this.add.image( 380, 200,'gameOver');
-        this.scoreText = this.add.text(16, 16, 'Score: 0', )
-        
         this.input.on('pointerdown', () => {
             this.scene.start('MenuScene');
         });
