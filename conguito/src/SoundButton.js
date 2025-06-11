@@ -14,8 +14,8 @@ export default class BotaoSom {
     this.botao = this.cena.add.text(x, y, this.estaMutado ? '🔇' : '🔊', {
       fontSize: '32px',
       color: '#fff'
-    }).setOrigin(1, 1) // Alinha o canto inferior direito do botão
-      .setInteractive(); // Torna o botão clicável
+    }).setOrigin(1,22) // Canto superior direito
+  .setInteractive(); // Torna o botão clicável
 
     // Adiciona evento de clique para alternar som
     this.botao.on('pointerdown', () => {
