@@ -229,50 +229,56 @@ class GameScene extends Phaser.Scene {
         const valorAumentoVelocidade = 10;    // Velocidade aumentada em 10
         const tempoParadaAviao = 500;
 
+        const velocidadeBombardilo = this.velocidadeBaseAviao + this.scoreVelocidade; // Velocidade antes da parada do bombardillo, para controle 
+
         if (this.score > 0 && this.score % pontosAumentoVelocidade === 0) {
             this.scoreVelocidade += valorAumentoVelocidade;
             console.log(`--- VELOCIDADE DO AVIÃO AUMENTADA! ---`);
             console.log(`Score atual: ${this.score}`);
             console.log(`Bônus de velocidade (scoreVelocidade): ${this.scoreVelocidade}`);
 
+
             ////////Pausadinha/////////
-            /*this.aviao.setVelocityX(0);
+            let direcaoDoBombardilo = this.aviao.body.velocity.x; // Para saber se o bombardillo esta indo Direita/Esquerda
+
+            if (direcaoDoBombardilo === 0){
+                direcaoDoBombardilo = 1;
+            }
+
+            this.aviao.setVelocityX(0);
             this.aviao.setVelocityY(0); // Garante que não haja movimento vertical residual
             this.aviao.body.allowGravity = false; // Garante que a gravidade não o afete durante a pausa
 
-            this.time.delayedCall(TEMPO_DE_PARADA_MS, () => {
+            this.time.delayedCall(tempoParadaAviao, () => {
 
-             // 3. Aplicar a nova velocidade após a pausa
-            const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;
+                // 3. Aplicar a nova velocidade após a pausa
+                const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;
 
-                // Retomar o movimento na direção correta
-                // Usamos a velocidade do frame anterior para saber a direção que ele estava
-            const ultimaVelocidadeX = this.aviao.body.prev.velocity.x;
+                    // Retomar o movimento na direção correta
+                    // Usamos a velocidade do frame anterior para saber a direção que ele estava
+                  
 
-            if (ultimaVelocidadeX >= 0) { // Se estava indo para direita ou parado
-                     this.aviao.setVelocityX(velocidadeAtual);
-                     this.aviao.setFlipX(false); // Garante que a imagem não esteja invertida se for para direita
-            } else { // Se estava indo para esquerda
-                     this.aviao.setVelocityX(-velocidadeAtual);
-                     this.aviao.setFlipX(true); // Garante que a imagem esteja invertida se for para esquerda
+                if (direcaoDoBombardilo >= 0) { // Se estava indo para direita ou parado
+                        this.aviao.setVelocityX(velocidadeAtual);
+                        this.aviao.setFlipX(false); // Garante que a imagem não esteja invertida se for para direita
+                } else { // Se estava indo para esquerda
+                        this.aviao.setVelocityX(-velocidadeAtual);
+                        this.aviao.setFlipX(true); // Garante que a imagem esteja invertida se for para esquerda
+                }
+
+            }, [], this);   
+
+            }else {
+                console.log(`Score atual: ${this.score}. Não é hora de aumentar a velocidade.`);
+
+                const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;
+                if (this.aviao.body.velocity.x > 0) { // Se estiver indo para a direita
+                    this.aviao.setVelocityX(velocidadeAtual);
+                } else { // Se estiver indo para a esquerda
+                    this.aviao.setVelocityX(-velocidadeAtual);
+                }    
             }
 
-            }, [], this);*/   
-
-
-
-
-        } else {
-            console.log(`Score atual: ${this.score}. Não é hora de aumentar a velocidade.`);
-        }
-
-        const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;
-        
-        if (this.aviao.body.velocity.x > 0) { // Se estiver indo para a direita
-                this.aviao.setVelocityX(velocidadeAtual);
-        } else { // Se estiver indo para a esquerda
-                this.aviao.setVelocityX(-velocidadeAtual)
-        }
         //////////////////////////////////////////////
 
         if (this.stars.countActive(true) === 0) {
@@ -370,4 +376,3 @@ const config = {
 };
 
 const game = new Phaser.Game(config);
-//teste vitim 
