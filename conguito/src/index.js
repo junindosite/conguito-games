@@ -427,12 +427,30 @@ class GameOverScene extends Phaser.Scene {
         this.finalScore = data.score;
     }
 
+    preload(){
+        this.load.image('gameOver', 'assets/logoGameOver.png')
+        // IREI MEXER MAIS AINDA
+
+
+    }
+
     create() {
         this.add.image(800, 300, 'sky');
-        this.add.text(400, 200, 'GAME OVER', { fontSize: '64px', fill: '#ff0000' }).setOrigin(0.5);
-        this.add.text(400, 300, `Score: ${this.finalScore}`, { fontSize: '32px', fill: '#fff' }).setOrigin(0.5);
-        this.add.text(400, 400, 'Clique para reiniciar', { fontSize: '24px', fill: '#fff' }).setOrigin(0.5);
-
+        this.add.text(380, 300, `Score: ${this.finalScore}`, { 
+        fontSize: '32px', 
+        fill: '#fff', 
+        stroke: '#000', 
+        strokeThickness: 3 
+    }).setOrigin(0.5);
+        this.add.text(400, 400, 'Clique para reiniciar', { 
+        fontSize: '40px', 
+        fill: '#fff', 
+        stroke: '#000', 
+        strokeThickness: 3 
+    }).setOrigin(0.5);
+        this.add.image( 380, 200,'gameOver');
+        this.scoreText = this.add.text(16, 16, 'Score: 0', )
+        
         this.input.on('pointerdown', () => {
             this.scene.start('MenuScene');
         });
@@ -448,7 +466,6 @@ const config = {
     type: Phaser.AUTO,
     width: 1280,
     height: 720,
-    backgroundColor: '#87ceeb',
     physics: {
         default: 'arcade',
         arcade: {
