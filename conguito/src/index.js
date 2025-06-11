@@ -75,6 +75,12 @@ class GameScene extends Phaser.Scene {
         this.load.image('bomb', 'assets/bomb.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
         this.load.image('aviao', 'assets/aviao.png');
+        this.load.spritesheet('aviaoAnimVeloc', 'assets/aviaospritesheet-aumentoVelocidade.png', {
+            frameWidth: 109,
+            frameHeight: 61
+
+        });
+
         //precisa adicionar frame de personagem morto!!!!!!!!!!!!!!
         //ataque tmb !!!!!!!
 
@@ -176,8 +182,26 @@ class GameScene extends Phaser.Scene {
         });
         this.botaoSom = new BotaoSom(this);
 
+        ////////SPRITE DO AVIAO AUMENTANDO VELOCIDADE///////////
 
+        this.anims.create({
 
+            key: 'spriteAviaoVelocidade',
+            frames: this.anims.generateFrameNumbers('aviaoAnimVeloc', {start: 0, end: 4}),
+            frameRate: 10,
+            repeat: 0,
+            hideOnComplete: true
+
+        });
+
+        this.animacaoBombardiloVeloc = this.add.sprite(
+            this.scale.width / 2,
+            this.scale.height / 2,
+            'aviaoAnimVeloc'
+        )
+        .setVisible(false)
+        .setDepth(100)
+        .setScale(0.7);
     }
 
     update() {
@@ -249,9 +273,14 @@ class GameScene extends Phaser.Scene {
             this.aviao.setVelocityY(0); // Garante que não haja movimento vertical residual
             this.aviao.body.allowGravity = false; // Garante que a gravidade não o afete durante a pausa
 
-            this.time.delayedCall(tempoParadaAviao, () => {
+            this.animacaoBombardiloVeloc.setPosition(this.aviao.x, this.aviao.y);
+            this.animacaoBombardiloVeloc.setVisible(true);
+            this.animacaoBombardiloVeloc.play('spriteAviaoVelocidade');
 
-                // 3. Aplicar a nova velocidade após a pausa
+            this.time.delayedCall(tempoParadaAviao, () => {
+            
+
+                //Aplicar a nova velocidade após a pausa
                 const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;
 
                     // Retomar o movimento na direção correta
