@@ -28,7 +28,7 @@ export default class MenuScene extends Phaser.Scene {
         const startButton = this.add.image(400, 250, 'startButton')
             .setInteractive()
             .setScale(0.2);
-            this.tweens.add({
+        this.tweens.add({
             targets: startButton,
             alpha: 0.3,
             duration: 800,
@@ -87,7 +87,7 @@ class GameScene extends Phaser.Scene {
         //audios
         this.load.audio('gameMusic', 'assets/musica/SomDeFundo.wav');// som de fundo do jogo
         this.load.audio('perdeu', 'assets/musica/perdeu.mp3');
-        
+
     }
 
     create() {
@@ -154,12 +154,12 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.bombs, platforms);
         this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
 
-       this.scoreText = this.add.text(16, 16, 'Score: 0', { 
-       fontSize: '32px', 
-       fill: '#fff', 
-       stroke: '#000', 
-       strokeThickness: 3 
-    });
+        this.scoreText = this.add.text(16, 16, 'Score: 0', {
+            fontSize: '32px',
+            fill: '#fff',
+            stroke: '#000',
+            strokeThickness: 3
+        });
 
 
         // Avião no topo da tela
@@ -194,7 +194,7 @@ class GameScene extends Phaser.Scene {
         this.anims.create({
 
             key: 'spriteAviaoVelocidade',
-            frames: this.anims.generateFrameNumbers('aviaoAnimVeloc', {start: 0, end: 4}),
+            frames: this.anims.generateFrameNumbers('aviaoAnimVeloc', { start: 0, end: 4 }),
             frameRate: 10,
             repeat: 0,
             hideOnComplete: true
@@ -206,9 +206,9 @@ class GameScene extends Phaser.Scene {
             this.scale.height / 2,
             'aviaoAnimVeloc'
         )
-        .setVisible(false)
-        .setDepth(100)
-        .setScale(0.7);
+            .setVisible(false)
+            .setDepth(100)
+            .setScale(0.7);
     }
 
     update() {
@@ -272,7 +272,7 @@ class GameScene extends Phaser.Scene {
             ////////Pausadinha/////////
             let direcaoDoBombardilo = this.aviao.body.velocity.x; // Para saber se o bombardillo esta indo Direita/Esquerda
 
-            if (direcaoDoBombardilo === 0){
+            if (direcaoDoBombardilo === 0) {
                 direcaoDoBombardilo = 1;
             }
 
@@ -286,33 +286,33 @@ class GameScene extends Phaser.Scene {
             const alturaSubir = alturaInicialAviao - 2;
 
             this.tweens.add({ /////////////TWEENS METODO USADO PARA DAR UMA MUDADA DE POSIÇÃO NO SPRITE DO BOMBARDILLO
-            targets: this.aviao,
-            y: alturaAbaixar, //desce um pouco
-            duration: duracaoTween, // 3 
-            ease: 'Sine.easeOut',
-            onUpdate: () => { // Adicionado onUpdate para seguir o avião
-                this.animacaoBombardiloVeloc.y = this.aviao.y;
-            },
-            onComplete: () => {
-                this.tweens.add({
-                    targets: this.aviao,
-                    y: alturaSubir, //sobe um pouco mais
-                    duration: duracaoTween,
-                    ease: 'Sine.easeInOut',
-                    onUpdate:() =>{
-                        this.animacaoBombardiloVeloc.y = this.aviao.y;
-                    },
-                    onComplete: () => {
-                        this.tweens.add({
-                            targets: this.aviao,
-                            y: alturaInicialAviao, // Volta para a posição original
-                            duration: duracaoTween,
-                            ease: 'Sine.easeIn',
-                           onUpdate: () => { // Adicionado onUpdate para seguir o avião
-                                this.animacaoBombardiloVeloc.y = this.aviao.y;
-                            }
-                        });
-                      }
+                targets: this.aviao,
+                y: alturaAbaixar, //desce um pouco
+                duration: duracaoTween, // 3 
+                ease: 'Sine.easeOut',
+                onUpdate: () => { // Adicionado onUpdate para seguir o avião
+                    this.animacaoBombardiloVeloc.y = this.aviao.y;
+                },
+                onComplete: () => {
+                    this.tweens.add({
+                        targets: this.aviao,
+                        y: alturaSubir, //sobe um pouco mais
+                        duration: duracaoTween,
+                        ease: 'Sine.easeInOut',
+                        onUpdate: () => {
+                            this.animacaoBombardiloVeloc.y = this.aviao.y;
+                        },
+                        onComplete: () => {
+                            this.tweens.add({
+                                targets: this.aviao,
+                                y: alturaInicialAviao, // Volta para a posição original
+                                duration: duracaoTween,
+                                ease: 'Sine.easeIn',
+                                onUpdate: () => { // Adicionado onUpdate para seguir o avião
+                                    this.animacaoBombardiloVeloc.y = this.aviao.y;
+                                }
+                            });
+                        }
                     });
                 }
             });
@@ -329,35 +329,35 @@ class GameScene extends Phaser.Scene {
             this.animacaoBombardiloVeloc.play('spriteAviaoVelocidade');
 
             this.time.delayedCall(tempoParadaAviao, () => {
-            
+
 
                 //Aplicar a nova velocidade após a pausa
                 const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;
 
-                    // Retomar o movimento na direção correta
-                    // Usamos a velocidade do frame anterior para saber a direção que ele estava
-                  
+                // Retomar o movimento na direção correta
+                // Usamos a velocidade do frame anterior para saber a direção que ele estava
+
 
                 if (direcaoDoBombardilo >= 0) { // Se estava indo para direita ou parado
-                        this.aviao.setVelocityX(velocidadeAtual);
-                        this.aviao.setFlipX(false); // Garante que a imagem não esteja invertida se for para direita
+                    this.aviao.setVelocityX(velocidadeAtual);
+                    this.aviao.setFlipX(false); // Garante que a imagem não esteja invertida se for para direita
                 } else { // Se estava indo para esquerda
-                        this.aviao.setVelocityX(-velocidadeAtual);
-                        this.aviao.setFlipX(true); // Garante que a imagem esteja invertida se for para esquerda
+                    this.aviao.setVelocityX(-velocidadeAtual);
+                    this.aviao.setFlipX(true); // Garante que a imagem esteja invertida se for para esquerda
                 }
 
-            }, [], this);   
+            }, [], this);
 
-            }else {
-                console.log(`Score atual: ${this.score}. Não é hora de aumentar a velocidade.`);
+        } else {
+            console.log(`Score atual: ${this.score}. Não é hora de aumentar a velocidade.`);
 
-                const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;
-                if (this.aviao.body.velocity.x > 0) { // Se estiver indo para a direita
-                    this.aviao.setVelocityX(velocidadeAtual);
-                } else { // Se estiver indo para a esquerda
-                    this.aviao.setVelocityX(-velocidadeAtual);
-                }    
+            const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;
+            if (this.aviao.body.velocity.x > 0) { // Se estiver indo para a direita
+                this.aviao.setVelocityX(velocidadeAtual);
+            } else { // Se estiver indo para a esquerda
+                this.aviao.setVelocityX(-velocidadeAtual);
             }
+        }
 
         //////////////////////////////////////////////
 
@@ -392,7 +392,7 @@ class GameScene extends Phaser.Scene {
         if (this.jaPerdeu) return;
         this.jaPerdeu = true;
 
-         if (this.gameMusic.isPlaying) {
+        if (this.gameMusic.isPlaying) {
             this.gameMusic.stop(); // Interrompe a reprodução da música de fundo do jogo
         }
 
@@ -413,8 +413,6 @@ class GameScene extends Phaser.Scene {
 
 
 
-
-
 }
 
 // ☠️ Cena de Game Over
@@ -427,33 +425,49 @@ class GameOverScene extends Phaser.Scene {
         this.finalScore = data.score;
     }
 
-    preload(){
+    preload() {
         this.load.image('gameOver', 'assets/logoGameOver.png')
         // IREI MEXER MAIS AINDA
-        this.load.image('return', 'assets/back.png')
+        this.load.image('volta', 'assets/back.png')
 
 
     }
 
     create() {
         this.add.image(800, 300, 'sky');
-        this.add.text(380, 300, `Score: ${this.finalScore}`, { 
-        fontSize: '32px', 
-        fill: '#fff', 
-        stroke: '#000', 
-        strokeThickness: 3 
-    }).setOrigin(0.5);
-        this.add.text(400, 400, 'Clique para reiniciar', { 
-        fontSize: '40px', 
-        fill: '#fff', 
-        stroke: '#000', 
-        strokeThickness: 3 
-    }).setOrigin(0.5);
-        this.add.image( 380, 200,'gameOver');
-        this.input.on('pointerdown', () => {
+        this.add.text(380, 300, `Score: ${this.finalScore}`, {
+            fontSize: '32px',
+            fill: '#fff',
+            stroke: '#000',
+            strokeThickness: 3
+        }).setOrigin(0.5);
+        this.add.text(400, 400, 'Clique para reiniciar', {
+            fontSize: '40px',
+            fill: '#fff',
+            stroke: '#000',
+            strokeThickness: 3
+        }).setOrigin(0.5);
+        this.add.image(380, 200, 'gameOver');
+        this.botaoSom = new BotaoSom(this);
+
+        const botaoVoltar = this.add.image(360, 460, 'volta')// variavel recebe imagem
+            .setScale(2.5)
+            .setInteractive();
+        //animação botao TWEENS BOTAO RODANDO
+        this.tweens.add({
+            targets: botaoVoltar,
+            angle: { from: -5, to: 5 },
+            duration: 500,
+            ease: 'Sine.easeInOut',
+            yoyo: true,
+            repeat: -1
+        });
+        //função voltar
+        botaoVoltar.on('pointerdown', () => {
             this.scene.start('MenuScene');
         });
-        this.botaoSom = new BotaoSom(this);
+
+
     }
 }
 
