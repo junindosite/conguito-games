@@ -486,7 +486,17 @@ const config = {
             debug: false
         }
     },
-    scene: [MenuScene, GameScene, GameOverScene]
-};
+    scene: [MenuScene, GameScene, GameOverScene],
+
+    scale: {
+        mode: Phaser.Scale.ENVELOP, // Escala o jogo para caber na tela, mantendo a proporção
+        autoCenter: Phaser.Scale.CENTER_BOTH, // Centraliza o jogo horizontal e verticalmente
+        // parent: 'game-container', // Opcional: Se você tiver um div com id="game-container" no seu HTML
+                                    // o canvas do Phaser será injetado lá.
+                                    // Se não for definido, Phaser cria o canvas diretamente no body.
+        width: 1280, // A largura de referência do seu jogo (deve ser a mesma do topo)
+        height: 720  // A altura de referência do seu jogo (deve ser a mesma do topo)
+        }
+    };
 
 const game = new Phaser.Game(config);
