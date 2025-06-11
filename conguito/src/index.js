@@ -85,8 +85,9 @@ class GameScene extends Phaser.Scene {
         //ataque tmb !!!!!!!
 
         //audios
+        this.load.audio('gameMusic', 'assets/musica/SomDeFundo.wav');// som de fundo do jogo
         this.load.audio('perdeu', 'assets/musica/perdeu.mp3');
-
+        
     }
 
     create() {
@@ -180,6 +181,12 @@ class GameScene extends Phaser.Scene {
                 bomb.setVelocity(Phaser.Math.Between(-100, 100), 200); // queda com leve variação horizontal
             }
         });
+        this.gameMusic = this.sound.add('gameMusic', { // Cria uma instância do áudio
+            loop: true, // Define para tocar em loop
+            volume: 0.3 // Define o volume
+        });
+        this.gameMusic.play(); // Inicia a reprodução da música
+
         this.botaoSom = new BotaoSom(this);
 
         ////////SPRITE DO AVIAO AUMENTANDO VELOCIDADE///////////
@@ -384,6 +391,10 @@ class GameScene extends Phaser.Scene {
     perdeu() {
         if (this.jaPerdeu) return;
         this.jaPerdeu = true;
+
+         if (this.gameMusic.isPlaying) {
+            this.gameMusic.stop(); // Interrompe a reprodução da música de fundo do jogo
+        }
 
         // Trocar textura do sprite por outro (sem sumir com ele)
         this.player.setTexture('morto'); // ← precisa carregar essa imagem no preload
