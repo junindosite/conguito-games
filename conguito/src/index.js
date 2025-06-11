@@ -19,9 +19,7 @@ class CutsceneScene extends Phaser.Scene {
              
        // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
         video.setDisplaySize(this.scale.width, this.scale.height)
- 
-        .setDepth(1).play(); // 'true' = som embutido no vídeo
-
+        .setDepth(1).play();
         const audio = this.sound.add('cutsceneAudio');
         audio.play();
 
@@ -31,11 +29,10 @@ class CutsceneScene extends Phaser.Scene {
             audio.stop();
             this.scene.start('GameScene');
         });
-
         // Ou ir automaticamente para o jogo ao fim do vídeo
         video.on('complete', () => {
-            audio.stop();
-            this.scene.start('GameScene');
+        audio.stop();
+        this.scene.start('GameScene');
         });
         video.on('play', () => console.log('🎥 Vídeo começou'));
         video.on('complete', () => console.log('✅ Vídeo terminou'));
@@ -52,7 +49,7 @@ export default class MenuScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('sky', 'assets/sky.png');
+        this.load.image('fundo', 'assets/sky.png');
         this.load.image('startButton', 'assets/play.png'); // Um botão simples como imagem
         this.load.image('conguitoLogo', 'assets/logo.png'); // Usado como a logo principal
         this.load.audio('menuMusic', 'assets/musica/menuMusic.mp3');
@@ -61,7 +58,7 @@ export default class MenuScene extends Phaser.Scene {
     create() {
         // Fundo
 
-        this.add.image(0, 0, 'sky')
+        this.add.image(0, 0, 'fundo')
             .setOrigin(0)
             .setDisplaySize(this.scale.width, this.scale.height);
 
@@ -111,7 +108,7 @@ class GameScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('sky', 'assets/sky.png');
+        this.load.image('sky', 'assets/skyNovo.png');
         this.load.image('ground', 'assets/platform.png');
         this.load.image('star', 'assets/banana.png');
         this.load.image('bomb', 'assets/bomb.png');
@@ -480,7 +477,7 @@ class GameOverScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.image(800, 300, 'sky');
+        this.add.image(800, 300, 'fundo');
         this.add.text(380, 300, `Score: ${this.finalScore}`, {
             fontSize: '32px',
             fill: '#fff',
