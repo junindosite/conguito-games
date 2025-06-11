@@ -36,7 +36,7 @@ export default class MenuScene extends Phaser.Scene {
             yoyo: true,
             repeat: -1
         });
-
+        
         startButton.on('pointerdown', () => {
             if (this.menuMusic.isPlaying) {
                 this.menuMusic.stop();
@@ -45,6 +45,7 @@ export default class MenuScene extends Phaser.Scene {
         });
 
         // Tocar música direto (pode ser bloqueado por navegador)
+        this.sound.stopAll();
         this.menuMusic = this.sound.add('menuMusic', {
             loop: true,
             volume: 0.3
@@ -181,6 +182,9 @@ class GameScene extends Phaser.Scene {
                 bomb.setVelocity(Phaser.Math.Between(-100, 100), 200); // queda com leve variação horizontal
             }
         });
+
+        //muisica
+        this.sound.stopAll();
         this.gameMusic = this.sound.add('gameMusic', { // Cria uma instância do áudio
             loop: true, // Define para tocar em loop
             volume: 0.3 // Define o volume
@@ -429,6 +433,7 @@ class GameOverScene extends Phaser.Scene {
         this.load.image('gameOver', 'assets/logoGameOver.png')
         // IREI MEXER MAIS AINDA
         this.load.image('volta', 'assets/back.png')
+        this.load.audio('musicaGO', 'assets/musica/menuMusic.mp3');
 
 
     }
@@ -462,6 +467,14 @@ class GameOverScene extends Phaser.Scene {
             yoyo: true,
             repeat: -1
         });
+        ///add musica
+        // Música
+        this.sound.stopAll(); // Garante que só uma música toque
+        this.musicaGO = this.sound.add('musicaGO', {
+            loop: true,
+            volume: 0.3
+        });
+        this.musicaGO.play();
         //função voltar
         botaoVoltar.on('pointerdown', () => {
             this.scene.start('MenuScene');
@@ -492,11 +505,11 @@ const config = {
         mode: Phaser.Scale.ENVELOP, // Escala o jogo para caber na tela, mantendo a proporção
         autoCenter: Phaser.Scale.CENTER_BOTH, // Centraliza o jogo horizontal e verticalmente
         // parent: 'game-container', // Opcional: Se você tiver um div com id="game-container" no seu HTML
-                                    // o canvas do Phaser será injetado lá.
-                                    // Se não for definido, Phaser cria o canvas diretamente no body.
+        // o canvas do Phaser será injetado lá.
+        // Se não for definido, Phaser cria o canvas diretamente no body.
         width: 1280, // A largura de referência do seu jogo (deve ser a mesma do topo)
         height: 720  // A altura de referência do seu jogo (deve ser a mesma do topo)
-        }
-    };
+    }
+};
 
 const game = new Phaser.Game(config);
