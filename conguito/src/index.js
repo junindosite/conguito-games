@@ -270,11 +270,55 @@ class GameScene extends Phaser.Scene {
             }
 
             this.aviao.setVelocityX(0);
-            this.aviao.setVelocityY(0); // Garante que não haja movimento vertical residual
+            this.aviao.setVelocityY(0); // Garante que não haja movimento vertical
             this.aviao.body.allowGravity = false; // Garante que a gravidade não o afete durante a pausa
+
+            const duracaoTween = tempoParadaAviao / 3; // Divide o tempo total da parada em 3 fases para o tween
+            const alturaInicialAviao = this.aviao.y; // Salva a altura original (40)
+            const alturaAbaixar = alturaInicialAviao + 1; // Ajusta para baixo 
+            const alturaSubir = alturaInicialAviao - 2;
+
+            this.tweens.add({ /////////////TWEENS METODO USADO PARA DAR UMA MUDADA DE POSIÇÃO NO SPRITE DO BOMBARDILLO
+            targets: this.aviao,
+            y: alturaAbaixar, //desce um pouco
+            duration: duracaoTween, // 3 
+            ease: 'Sine.easeOut',
+            onUpdate: () => { // Adicionado onUpdate para seguir o avião
+                this.animacaoBombardiloVeloc.y = this.aviao.y;
+            },
+            onComplete: () => {
+                this.tweens.add({
+                    targets: this.aviao,
+                    y: alturaSubir, //sobe um pouco mais
+                    duration: duracaoTween,
+                    ease: 'Sine.easeInOut',
+                    onUpdate:() =>{
+                        this.animacaoBombardiloVeloc.y = this.aviao.y;
+                    },
+                    onComplete: () => {
+                        this.tweens.add({
+                            targets: this.aviao,
+                            y: alturaInicialAviao, // Volta para a posição original
+                            duration: duracaoTween,
+                            ease: 'Sine.easeIn',
+                           onUpdate: () => { // Adicionado onUpdate para seguir o avião
+                                this.animacaoBombardiloVeloc.y = this.aviao.y;
+                            }
+                        });
+                      }
+                    });
+                }
+            });
 
             this.animacaoBombardiloVeloc.setPosition(this.aviao.x, this.aviao.y);
             this.animacaoBombardiloVeloc.setVisible(true);
+
+            if (direcaoDoBombardilo < 0) { // Se o avião estava indo para a esquerda
+                this.animacaoBombardiloVeloc.setFlipX(true);
+            } else { // Se o avião estava indo para a direita ou parado
+                this.animacaoBombardiloVeloc.setFlipX(false);
+            }
+
             this.animacaoBombardiloVeloc.play('spriteAviaoVelocidade');
 
             this.time.delayedCall(tempoParadaAviao, () => {
