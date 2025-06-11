@@ -227,13 +227,41 @@ class GameScene extends Phaser.Scene {
         //LOGICA PARA AUMENTO DE VELOCIDADE//
         const pontosAumentoVelocidade = 50; // A cada 50 pontos, aumenta a velocidade
         const valorAumentoVelocidade = 10;    // Velocidade aumentada em 10
-
+        const tempoParadaAviao = 500;
 
         if (this.score > 0 && this.score % pontosAumentoVelocidade === 0) {
             this.scoreVelocidade += valorAumentoVelocidade;
             console.log(`--- VELOCIDADE DO AVIÃO AUMENTADA! ---`);
             console.log(`Score atual: ${this.score}`);
             console.log(`Bônus de velocidade (scoreVelocidade): ${this.scoreVelocidade}`);
+
+            ////////Pausadinha/////////
+            /*this.aviao.setVelocityX(0);
+            this.aviao.setVelocityY(0); // Garante que não haja movimento vertical residual
+            this.aviao.body.allowGravity = false; // Garante que a gravidade não o afete durante a pausa
+
+            this.time.delayedCall(TEMPO_DE_PARADA_MS, () => {
+
+             // 3. Aplicar a nova velocidade após a pausa
+            const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;
+
+                // Retomar o movimento na direção correta
+                // Usamos a velocidade do frame anterior para saber a direção que ele estava
+            const ultimaVelocidadeX = this.aviao.body.prev.velocity.x;
+
+            if (ultimaVelocidadeX >= 0) { // Se estava indo para direita ou parado
+                     this.aviao.setVelocityX(velocidadeAtual);
+                     this.aviao.setFlipX(false); // Garante que a imagem não esteja invertida se for para direita
+            } else { // Se estava indo para esquerda
+                     this.aviao.setVelocityX(-velocidadeAtual);
+                     this.aviao.setFlipX(true); // Garante que a imagem esteja invertida se for para esquerda
+            }
+
+            }, [], this);*/   
+
+
+
+
         } else {
             console.log(`Score atual: ${this.score}. Não é hora de aumentar a velocidade.`);
         }
