@@ -91,7 +91,7 @@ class GameScene extends Phaser.Scene {
         this.score = 0;
         this.gameOver = false;
 
-        this.scoreVelocidade = 150; // Variavel que vai determinar a velocidade do aviao; Começa em 150 ja!!!
+        this.scoreVelocidade = 0; // Variavel que vai determinar a velocidade do aviao; Começa em 150 ja!!!
 
 
         const platforms = this.physics.add.staticGroup();
@@ -237,7 +237,13 @@ class GameScene extends Phaser.Scene {
             console.log(`Score atual: ${this.score}. Não é hora de aumentar a velocidade.`);
         }
 
-
+        const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;
+        
+        if (this.aviao.body.velocity.x > 0) { // Se estiver indo para a direita
+                this.aviao.setVelocityX(velocidadeAtual);
+        } else { // Se estiver indo para a esquerda
+                this.aviao.setVelocityX(-velocidadeAtual)
+        }
         //////////////////////////////////////////////
 
         if (this.stars.countActive(true) === 0) {
