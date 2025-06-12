@@ -133,6 +133,7 @@ class GameScene extends Phaser.Scene {
         //audios
         this.load.audio('gameMusic', 'assets/musica/SomDeFundo.wav');// som de fundo do jogo
         this.load.audio('perdeu', 'assets/musica/perdeu.mp3');
+        this.load.audio('pulo', 'assets/musica/pulo');
 
     }
 
