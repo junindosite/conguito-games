@@ -146,6 +146,7 @@ export default class GameScene2Fase extends Phaser.Scene {
                 bomb.setBounce(1);
                 bomb.setCollideWorldBounds(true);
                 bomb.setVelocity(Phaser.Math.Between(-100, 100), 200);
+                bomb.setScale(0.7);
             }
         });
 
