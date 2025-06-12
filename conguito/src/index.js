@@ -1,5 +1,6 @@
 import Phaser from 'phaser';
 import BotaoSom from './SoundButton';
+import GameScene2Fase from './GameScene2Fase';
 
 
 /// cena cutscene depois do play
@@ -117,6 +118,12 @@ class GameScene extends Phaser.Scene {
 
         });
         this.load.image('chao', 'assets/chaoNovo.png');
+
+        this.load.spritesheet('aviaoAnimVelocFase2', 'assets/aviaospritesheet-Velocidade200.png', {
+            frameWidth: 109,
+            frameHeight: 61
+
+        });
 
         //precisa adicionar frame de personagem morto!!!!!!!!!!!!!!
         //ataque tmb !!!!!!!
@@ -269,6 +276,26 @@ class GameScene extends Phaser.Scene {
             .setVisible(false)
             .setDepth(100)
             .setScale(0.7);
+        
+        /////////FASE DOIS MINI SPRITE!//////////
+        this.anims.create({
+
+            key: 'spriteAviaoVelocidade',
+            frames: this.anims.generateFrameNumbers('aviaoAnimVelocFase2', { start: 0, end: 6 }),
+            frameRate: 10,
+            repeat: 0,
+            hideOnComplete: true
+
+            });
+
+        this.animacaoBombardiloVeloc = this.add.sprite(
+            this.scale.width / 2,
+            this.scale.height / 2,
+            'aviaoAnimVelocFase2'
+        )
+            .setVisible(false)
+            .setDepth(100)
+            .setScale(0.7);
     }
 
     update() {
@@ -315,10 +342,19 @@ class GameScene extends Phaser.Scene {
         this.score += 10;
         this.scoreText.setText('☠️Aura: ' + this.score);
 
+        /////////FASE 2////////////////
+
+        if(this.score >= 60){
+
+            this.scene.start('GameScene2Fase', { score: this.score }); // *** Passando o score ***
+            return;
+        }
+
         //LOGICA PARA AUMENTO DE VELOCIDADE//
         const pontosAumentoVelocidade = 50; // A cada 50 pontos, aumenta a velocidade
         const valorAumentoVelocidade = 10;    // Velocidade aumentada em 10
         const tempoParadaAviao = 500;
+
 
         const velocidadeBombardilo = this.velocidadeBaseAviao + this.scoreVelocidade; // Velocidade antes da parada do bombardillo, para controle 
 
@@ -540,6 +576,9 @@ class GameOverScene extends Phaser.Scene {
     }
 }
 
+    
+
+
 window.configuracoesJogo = {
     somAtivo: true
 };
@@ -555,7 +594,7 @@ const config = {
             debug: false
         }
     },
-    scene: [MenuScene, CutsceneScene ,GameScene, GameOverScene],
+    scene: [MenuScene, CutsceneScene ,GameScene, GameScene2Fase, GameOverScene],
 
     scale: {
         mode: Phaser.Scale.ENVELOP, // Escala o jogo para caber na tela, mantendo a proporção
