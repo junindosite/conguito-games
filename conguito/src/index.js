@@ -468,13 +468,16 @@ class GameScene extends Phaser.Scene {
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
             this.player.setTexture('ladoE');
+            this.player.setFlipX(true);
         } else if (this.cursors.right.isDown) {
             this.player.setVelocityX(160);
-            this.player.setTexture('ladoD');
+            this.player.setTexture('ladoE');
+            this.player.setFlipX(false);
         } else {
             this.player.setVelocityX(0);
             this.player.setTexture('frente');
         }
+
 
 
         if (this.cursors.up.isDown && this.player.body.touching.down) {

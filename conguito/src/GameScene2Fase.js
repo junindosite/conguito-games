@@ -28,6 +28,15 @@ export default class GameScene2Fase extends Phaser.Scene {
         this.load.image('chao', 'assets/chaoNovo.png');
         this.load.image('morto', 'assets/morto.png'); 
 
+
+        ///////CARREGANDO PERSONAGEM/////////////
+        this.load.image('frente', 'assets/parado.png');
+        this.load.image('ladoD', 'assets/andando.png');
+        this.load.image('ladoE', 'assets/andando.png');
+        this.load.image('salto', 'assets/salto.png');
+        this.load.image('morreu', 'assets/morreu.png');
+
+
         //////////FASE 2////////////////////
         this.load.image('sky2', 'assets/FundoFase2.png'); 
         this.load.image('aviao2', 'assets/AviaoFase2.png');
@@ -72,41 +81,32 @@ export default class GameScene2Fase extends Phaser.Scene {
         platforms.create(1200, 230, 'ground2').setScale(0.85).refreshBody();
         platforms.create(100, 230, 'ground2').setFlipX(true).setScale(0.85).refreshBody();
         
-        this.player = this.physics.add.sprite(100, 450, 'dude');
+        this.player = this.physics.add.sprite(100, 450, 'frente');
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
+        this.player.setScale(0.4);
 
-        this.jaPerdeu = false;
+         this.jaPerdeu = false;
 
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'turn',
-            frames: [{ key: 'dude', frame: 4 }],
-            frameRate: 20
-        });
-
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-            frameRate: 10,
-            repeat: -1
-        });
 
         this.physics.add.collider(this.player, platforms);
 
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        this.stars = this.physics.add.group({
-            key: 'star',
-            repeat: 11,
-            setXY: { x: 12, y: 0, stepX: 70 }
-        });
+        ///////////SCORES ALEATORIOS/////////
+        this.stars = this.physics.add.group();
+
+        for (let i = 0; i < 11; i++) {
+                    const xAleatorio = Phaser.Math.Between(50, this.scale.width - 50);
+                    const yAleatorio = Phaser.Math.Between(100, this.scale.height - 100); // Agora é em qualquer lugar visível
+        
+                    const star = this.stars.create(xAleatorio, yAleatorio, 'star');
+                    star.setBounce(0.3);
+                    star.setCollideWorldBounds(true);
+                    star.setScale(0.12);
+                    star.setFlipX(0.5);
+                    star.angle = 15;
+                }
 
         this.stars.children.iterate((child) => {
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
@@ -176,6 +176,8 @@ export default class GameScene2Fase extends Phaser.Scene {
             .setVisible(false)
             .setDepth(100)
             .setScale(0.7);
+
+    
     }
 
     update() {
@@ -199,18 +201,21 @@ export default class GameScene2Fase extends Phaser.Scene {
 
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
-            this.player.anims.play('left', true);
+            this.player.setTexture('ladoE');
+            this.player.setFlipX(true);
         } else if (this.cursors.right.isDown) {
             this.player.setVelocityX(160);
-            this.player.anims.play('right', true);
+            this.player.setTexture('ladoE');
+            this.player.setFlipX(false);
         } else {
             this.player.setVelocityX(0);
-            this.player.anims.play('turn');
+            this.player.setTexture('frente');
         }
-             
+
+
         if (this.cursors.up.isDown && this.player.body.touching.down) {
-        this.player.setVelocityY(-330);
-        this.sound.play('pulo'); //
+            this.player.setVelocityY(-330);
+            this.sound.play('pulo'); // 🔊 Toca o som do pulo
         }
     }
 
