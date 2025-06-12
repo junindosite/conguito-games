@@ -154,7 +154,6 @@ class GameScene extends Phaser.Scene {
           this.input.keyboard.once('keydown-F9', () => {
              console.log("opa você é Moderador??👩🏻‍💻👩🏻‍💻");
             this.scene.start('GameScene2Fase', { score: this.score }); // *** Passando o score ***
-           
             return;
             
         });
