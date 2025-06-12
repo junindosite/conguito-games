@@ -2,6 +2,7 @@
 export default class BotaoSom {
   constructor(cena) {
     this.cena = cena;
+  
 
     // Define se o som está mutado com base nas configurações globais
     this.estaMutado = !window.configuracoesJogo.somAtivo;
