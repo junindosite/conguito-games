@@ -3,6 +3,50 @@ import BotaoSom from './SoundButton';
 import GameScene2Fase from './GameScene2Fase';
 
 
+
+/// cena cutscene depois do play
+class CutsceneScene extends Phaser.Scene {
+    constructor() {
+        super({ key: 'CutsceneScene' });
+    }
+
+    preload() {
+        this.load.video('cutscene', 'assets/musica/video/Videocutscenes.mp4', 'loadeddata', false, true);
+        this.load.audio('cutsceneAudio', 'assets/musica/cutscene.mp3');
+    }
+
+    create() {
+
+        const video = this.add.video(this.scale.width / 2, this.scale.height / 2, 'cutscene');
+
+        // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
+        video.setDisplaySize(this.scale.width, this.scale.height)
+            .setDepth(1).play();
+        const audio = this.sound.add('cutsceneAudio');
+        audio.play();
+        console.log('🎥 Vídeo começou')
+
+        // Pular com ENTER
+        this.input.keyboard.once('keydown-SPACE', () => {
+            video.stop();
+            console.log('✅ Vídeo terminou')
+            audio.stop();
+            this.scene.start('GameScene');
+        });
+        // Ou ir automaticamente para o jogo ao fim do vídeo
+        video.on('complete', () => {
+            audio.stop();
+            this.scene.start('GameScene');
+
+        });
+
+
+
+    }
+}
+
+
+
 /// cena cutscene depois do play
 class CutsceneScene extends Phaser.Scene {
     constructor() {
