@@ -92,6 +92,7 @@ export default class MenuScene extends Phaser.Scene {
         this.load.image('startButton', 'assets/play.png');
         this.load.image('conguitoLogo', 'assets/logo.png');
         this.load.audio('menuMusic', 'assets/musica/menu.mp3');
+        this.load.image('logoC', 'assets/logoCreditos.png');
     }
 
     create() {
@@ -101,8 +102,8 @@ export default class MenuScene extends Phaser.Scene {
             .setOrigin(0)
             .setDisplaySize(this.scale.width, this.scale.height);
         // Logo e botão nas posições fixas
-        this.add.image(642, 75, 'conguitoLogo').setScale(1.0);
-        const startButton = this.add.image(642, 250, 'startButton').setScale(0.2)
+        this.add.image(610, 75, 'conguitoLogo').setScale(1.0);
+        const startButton = this.add.image(610, 250, 'startButton').setScale(0.2)
             .setInteractive();
         this.tweens.add({
             targets: startButton,
@@ -136,17 +137,21 @@ export default class MenuScene extends Phaser.Scene {
         ///////////////////////////////////////////////////////////////
 
         ///chamando creditossssss e logoooo
-
-        const creditosText = this.add.text(642, 400, 'creditos', {
-            fontSize: '32px',
-            fill: '#ffffff'
+       const credito = this.add.image(610,370,'logoC').setScale(0.8).setInteractive();
+         this.tweens.add({
+            targets: credito,
+            alpha: 0.6,
+            duration: 800,
+            ease: 'Linear',
+            yoyo: true,
+            repeat: -1
         });
-
+            
         // Deixa o texto interativo para receber cliques
-        creditosText.setInteractive();
+        
 
         // Adiciona o listener de clique
-        creditosText.on('pointerdown', () => {
+       credito.on('pointerdown', () => {
             this.scene.start('creditos');
         });
         /////////////////////////////////////////////////////
