@@ -36,7 +36,9 @@ export default class GameScene2Fase extends Phaser.Scene {
 
         this.load.audio('gameMusicFase2', 'assets/musica/SomDeFundo.wav'); // Se for música diferente, mude o caminho
         this.load.audio('perdeu', 'assets/musica/perdeu.mp3');
+        this.load.audio('pulo', 'assets/musica/pulo.mp3');
         console.log('Preload da Fase 2 concluído.');
+
     }
 
     create() {
@@ -203,9 +205,10 @@ export default class GameScene2Fase extends Phaser.Scene {
             this.player.setVelocityX(0);
             this.player.anims.play('turn');
         }
-
+             
         if (this.cursors.up.isDown && this.player.body.touching.down) {
-            this.player.setVelocityY(-330);
+        this.player.setVelocityY(-330);
+        this.sound.play('pulo'); //
         }
     }
 
