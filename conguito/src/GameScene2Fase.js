@@ -17,9 +17,9 @@ export default class GameScene2Fase extends Phaser.Scene {
     preload() {
         console.log('Iniciando preload da Fase 2...');
         // Por favor, verifique se todos esses assets estão na pasta 'assets' com esses nomes exatos.
-        this.load.image('ground', 'assets/plataformavoa.png');
+        this.load.image('ground2', 'assets/plataformavoa2.png');
         this.load.image('star', 'assets/banana.png');
-        this.load.image('bombHF', 'assets/bomb.png'); // Se for uma bomba diferente para Fase 2, use 'assets/bombHF.png'
+        this.load.image('bombHF', 'assets/bombHF.png'); // Se for uma bomba diferente para Fase 2, use 'assets/bombHF.png'
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
         this.load.spritesheet('aviaoAnimVelocFase2', 'assets/aviaospritesheet-Velocidade200.png', {
             frameWidth: 109,
@@ -62,12 +62,12 @@ export default class GameScene2Fase extends Phaser.Scene {
         platforms.create(1200, 699, 'chao').setScale(1.5).refreshBody();
 
         //////////////////////PLATAFORMAS///////////////////
-        platforms.create(640, 560, 'ground').setFlipX(true).setScale(0.9).refreshBody();
-        platforms.create(300, 420, 'ground').setScale(0.85).refreshBody();
-        platforms.create(980, 420, 'ground').setScale(0.85).refreshBody(); 
-        platforms.create(660, 260, 'ground').setScale(1).refreshBody();
-        platforms.create(1200, 230, 'ground').setScale(0.85).refreshBody();
-        platforms.create(100, 230, 'ground').setFlipX(true).setScale(0.85).refreshBody();
+        platforms.create(640, 560, 'ground2').setFlipX(true).setScale(0.9).refreshBody();
+        platforms.create(300, 420, 'ground2').setScale(0.85).refreshBody();
+        platforms.create(980, 420, 'ground2').setScale(0.85).refreshBody(); 
+        platforms.create(660, 260, 'ground2').setScale(1).refreshBody();
+        platforms.create(1200, 230, 'ground2').setScale(0.85).refreshBody();
+        platforms.create(100, 230, 'ground2').setFlipX(true).setScale(0.85).refreshBody();
         
         this.player = this.physics.add.sprite(100, 450, 'dude');
         this.player.setBounce(0.2);
@@ -130,7 +130,7 @@ export default class GameScene2Fase extends Phaser.Scene {
 
 
         this.aviao = this.physics.add.sprite(400, 50, 'aviao2').setScale(0.7);
-        this.velocidadeBaseAviao = 150;
+        this.velocidadeBaseAviao = 200;
         this.aviao.setVelocityX(this.velocidadeBaseAviao);
         this.aviao.setCollideWorldBounds(true);
         this.aviao.setBounce(1, 0);
@@ -230,6 +230,7 @@ export default class GameScene2Fase extends Phaser.Scene {
             bomb.setBounce(1);
             bomb.setCollideWorldBounds(true);
             bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+            bomb.setScale(0.7);
         }
 
         const pontosAumentoVelocidade = 50;
