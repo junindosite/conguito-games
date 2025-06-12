@@ -24,7 +24,7 @@ class CutsceneScene extends Phaser.Scene {
         audio.play();
 
         // Pular com ENTER
-        this.input.keyboard.once('keydown-ENTER', () => {
+        this.input.keyboard.once('keydown-SPACE', () => {
             video.stop();
             audio.stop();
             this.scene.start('GameScene');
@@ -50,9 +50,9 @@ export default class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.image('fundo', 'assets/sky.png');
-        this.load.image('startButton', 'assets/play.png'); // Um botão simples como imagem
-        this.load.image('conguitoLogo', 'assets/logo.png'); // Usado como a logo principal
-        this.load.audio('menuMusic', 'assets/musica/menuMusic.mp3');
+        this.load.image('startButton', 'assets/play.png'); 
+        this.load.image('conguitoLogo', 'assets/logo.png'); 
+        this.load.audio('menuMusic', 'assets/musica/.mp3');// COLOCAR MUSICA
     }
 
     create() {
@@ -225,7 +225,7 @@ class GameScene extends Phaser.Scene {
         this.sound.stopAll();
         this.gameMusic = this.sound.add('gameMusic', { // Cria uma instância do áudio
             loop: true, // Define para tocar em loop
-            volume: 0.3 // Define o volume
+            volume: 0.2// Define o volume
         });
         this.gameMusic.play(); // Inicia a reprodução da música
 
@@ -471,7 +471,7 @@ class GameOverScene extends Phaser.Scene {
         this.load.image('gameOver', 'assets/logoGameOver.png')
         // IREI MEXER MAIS AINDA
         this.load.image('volta', 'assets/back.png')
-        this.load.audio('musicaGO', 'assets/musica/menuMusic.mp3');
+        this.load.audio('musicaGO', 'assets/musica/musicaGO.mp3');
 
 
     }
