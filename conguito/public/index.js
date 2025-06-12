@@ -252,7 +252,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('ladoD', 'assets/andando.png');
         this.load.image('ladoE', 'assets/andando.png');
         this.load.image('salto', 'assets/salto.png');
-        this.load.image('morreu', 'assets/morreu.png');
+        this.load.image('morto', 'assets/mortoD.png');
         //////////////
 
         this.load.image('chao', 'assets/chaoNovo.png');
@@ -496,7 +496,7 @@ class GameScene extends Phaser.Scene {
         this.scoreText.setText('☠️Aura: ' + this.score);
 
         /////////FASE 2////////////////
-if (this.score >= 20) {
+if (this.score >= 200) {
     this.scene.start('Fase2', { score: this.score }); // ← Apenas a CUTSCENE
     return;
 }
@@ -634,7 +634,9 @@ if (this.score >= 20) {
 
     hitBomb(player, bomb) {
         this.physics.pause();
-
+        this.cameras.main.shake(300, 0.02);
+         player.setTint(0xff0000);
+        player.anims.play('turn');
         player.setTint(0xff0000);
         player.anims.play('turn');
 

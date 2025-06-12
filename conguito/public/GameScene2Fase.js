@@ -334,8 +334,8 @@ export default class GameScene2Fase extends Phaser.Scene {
 
     hitBomb(player, bomb) {
         this.physics.pause();
-
-        player.setTint(0xff0000);
+         this.cameras.main.shake(300, 0.02);
+         player.setTint(0xff0000);
         player.anims.play('turn');
 
         this.gameOver = true;
