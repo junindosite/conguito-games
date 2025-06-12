@@ -61,7 +61,7 @@ class creditos extends Phaser.Scene {
         const video = this.add.video(this.scale.width / 2, this.scale.height / 2, 'creditos');
         // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
         video.setDisplaySize(this.scale.width, this.scale.height)
-            .setDepth(1).play();
+        .setDepth(1).play();
         const audio = this.sound.add('cMusica');
         audio.play();
         console.log('🎥 Vídeo começou')
@@ -91,7 +91,7 @@ export default class MenuScene extends Phaser.Scene {
 
     create() {
         // Fundo
-
+        this.sound.stopAll();
         this.add.image(0, 0, 'fundo')
             .setOrigin(0)
             .setDisplaySize(this.scale.width, this.scale.height);
