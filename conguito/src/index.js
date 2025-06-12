@@ -61,14 +61,14 @@ class creditos extends Phaser.Scene {
         const video = this.add.video(this.scale.width / 2, this.scale.height / 2, 'creditos');
         // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
         video.setDisplaySize(this.scale.width, this.scale.height)
-        .setDepth(1).play();
+            .setDepth(1).play();
         const audio = this.sound.add('cMusica');
         audio.play();
         console.log('🎥 Vídeo começou')
-         
+
         video.on('complete', () => {
-        audio.stop();
-        this.scene.start('MenuScene');
+            audio.stop();
+            this.scene.start('MenuScene');
 
         });
 
@@ -102,8 +102,8 @@ export default class MenuScene extends Phaser.Scene {
             .setOrigin(0)
             .setDisplaySize(this.scale.width, this.scale.height);
         // Logo e botão nas posições fixas
-    const conguito  = this.add.image(610, 75, 'conguitoLogo').setScale(1.0);
-         this.tweens.add({
+        const conguito = this.add.image(610, 75, 'conguitoLogo').setScale(1.0);
+        this.tweens.add({
             targets: conguito,
             angle: { from: -2, to: 2 },
             duration: 500,
@@ -146,8 +146,8 @@ export default class MenuScene extends Phaser.Scene {
         ///////////////////////////////////////////////////////////////
 
         ///chamando creditossssss e logoooo
-       const credito = this.add.image(610,370,'logoC').setScale(0.8).setInteractive();
-         this.tweens.add({
+        const credito = this.add.image(610, 370, 'logoC').setScale(0.8).setInteractive();
+        this.tweens.add({
             targets: credito,
             alpha: 0.6,
             duration: 800,
@@ -157,21 +157,21 @@ export default class MenuScene extends Phaser.Scene {
         });
 
         // o listener de clique
-       credito.on('pointerdown', () => {
+        credito.on('pointerdown', () => {
             this.scene.start('creditos');
         });
         /////////////////////////////////////////////////////
 
-       const f11= this.add.text(610, 660, 'Pressione F11 para melhor experiência', {
+        const f11 = this.add.text(610, 660, 'Pressione F11 para melhor experiência', {
             fontSize: '40px',
-            fill: '#FFA600',       
-            stroke: '#000000',       
-            strokeThickness: 4,      
-            fontFamily: 'Arial'      
+            fill: '#FFA600',
+            stroke: '#000000',
+            strokeThickness: 4,
+            fontFamily: 'Arial'
         }).setOrigin(0.5);
 
-            this.tweens.add({
-            targets: f11 ,
+        this.tweens.add({
+            targets: f11,
             alpha: 0.6,
             duration: 800,
             ease: 'Linear',
@@ -621,22 +621,46 @@ class GameOverScene extends Phaser.Scene {
 
     create() {
         this.add.image(800, 300, 'fundo');
-        this.add.text(642, 300, `☠️Aura: ${this.finalScore}+++`, {
-            fontSize: '32px',
-            fill: '#fff',
-            stroke: '#000',
-            strokeThickness: 3
-        }).setOrigin(0.5);
-        this.add.text(642, 400, 'Clique para reiniciar', {
+        this.add.image(610, 120, 'gameOver').setScale(1.3);
+        // Texto com pontuação final
+        const aura=   this.add.text(610, 300, `☠️Aura: ${this.finalScore}+++`, {
             fontSize: '40px',
-            fill: '#fff',
-            stroke: '#000',
-            strokeThickness: 3
+            fill: '#FFA600',         // Amarelo alaranjado baseado na imagem
+            stroke: '#000000',       // Contorno preto
+            strokeThickness: 6,
+            fontFamily: 'Arial Black'
         }).setOrigin(0.5);
-        this.add.image(642, 120, 'gameOver').setScale(1.0);
-        this.botaoSom = new BotaoSom(this);
 
-        const botaoVoltar = this.add.image(642, 460, 'volta')// variavel recebe imagem
+        ///tweeenen
+        this.tweens.add({
+            targets: aura,
+            alpha: 0.6,
+            duration: 800,
+            ease: 'Linear',
+            yoyo: true,
+            repeat: -1
+        })
+
+        // Texto "Clique para reiniciar"
+        const reiniciar =   this.add.text(610, 400, 'Clique para reiniciar', {
+            fontSize: '40px',
+            fill: '#FFA600',
+            stroke: '#000000',
+            strokeThickness: 6,
+            fontFamily: 'Arial Black'
+        }).setOrigin(0.5);
+
+        ///tweens
+        this.tweens.add({
+            targets:reiniciar ,
+            alpha: 0.6,
+            duration: 800,
+            ease: 'Linear',
+            yoyo: true,
+            repeat: -1
+        })
+
+        const botaoVoltar = this.add.image(610, 460, 'volta')// variavel recebe imagem
             .setScale(2.5)
             .setInteractive();
         //animação botao TWEENS BOTAO RODANDO
