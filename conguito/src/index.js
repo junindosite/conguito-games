@@ -59,15 +59,12 @@ export default class MenuScene extends Phaser.Scene {
         // Fundo
 
         this.add.image(0, 0, 'fundo')
-            .setOrigin(0)
-            .setDisplaySize(this.scale.width, this.scale.height);
-this.add.image(this.scale.width / 2, 180, 'conguitoLogo') 
-             .setScale(0.8)
-            .setOrigin(0.5);
-        const startButton = this.add.image(this.scale.width / 2, 380, 'startButton') 
-            .setInteractive()
-            .setScale(0.2)
-            .setOrigin(0.5);
+        .setOrigin(0)
+        .setDisplaySize(this.scale.width, this.scale.height);
+        // Logo e botão nas posições fixas
+        this.add.image(642, 75, 'conguitoLogo').setScale(1.0);
+        const startButton = this.add.image(642, 250, 'startButton') .setScale(0.2)
+        .setInteractive();
         this.tweens.add({
             targets: startButton,
             alpha: 0.3,
