@@ -224,7 +224,7 @@ class GameScene extends Phaser.Scene {
         this.load.audio('gameMusic', 'assets/musica/SomDeFundo.wav');// som de fundo do jogo
         this.load.audio('perdeu', 'assets/musica/perdeu.mp3');
         this.load.audio('pulo', 'assets/musica/pulo.mp3');
-
+        this.load.audio('coletar', 'assets/musica/coletar.mp3');
     }
 
     create() {
@@ -281,12 +281,25 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.player, platforms);
 
         this.cursors = this.input.keyboard.createCursorKeys();
+        ///////////////////////////////////////////////////////////////
+        ////// conguitaaaaaa
+        // Cria o grupo de estrelas (bananas)
+        this.stars = this.physics.add.group();
 
-        this.stars = this.physics.add.group({
-            key: 'star',
-            repeat: 11,
-            setXY: { x: 12, y: 0, stepX: 70 }
-        });
+        // Gera 10 estrelas com posições aleatórias **em toda a tela**
+        for (let i = 0; i < 11; i++) {
+            const xAleatorio = Phaser.Math.Between(50, this.scale.width - 50);
+            const yAleatorio = Phaser.Math.Between(100, this.scale.height - 100); // Agora é em qualquer lugar visível
+
+            const star = this.stars.create(xAleatorio, yAleatorio, 'star');
+            star.setBounce(0.3);
+            star.setCollideWorldBounds(true);
+            star.setScale(0.12);
+            star.setFlipX(0.5);
+            star.angle = 15;
+        }
+
+        //////////////////////////////////////////////////////////////
 
         this.stars.children.iterate((child) => {
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
@@ -427,6 +440,8 @@ class GameScene extends Phaser.Scene {
 
     collectStar(player, star) {
         star.disableBody(true, true);
+        this.sound.play('coletar');
+
 
         this.score += 10;
         this.scoreText.setText('☠️Aura: ' + this.score);
@@ -545,21 +560,28 @@ class GameScene extends Phaser.Scene {
         }
 
         //////////////////////////////////////////////
+        // se nao houver mais ira reaparecer em local aleatorio
+         if (this.stars.countActive(true) === 0) {
+        console.log("🍌 Reaparecendo bananas - versão simplificada");
+        this.stars.children.iterate((estrela) => {
+            const xAleatorio = Phaser.Math.Between(50, this.scale.width - 50);
+            const yAleatorio = Phaser.Math.Between(100, 500); // Altura acessível
+            
+            estrela.enableBody(true, xAleatorio, yAleatorio, true, true);
+            estrela.setVelocity(0, 0); // Sem movimento inicial
+            estrela.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+        });
 
-        if (this.stars.countActive(true) === 0) {
-            this.stars.children.iterate(function (child) {
-                child.enableBody(true, child.x, 0, true, true);
-            });
+    // Código existente para lançar uma bomba quando as estrelas reaparecem
+    const x = (this.player.x < 400)
+        ? Phaser.Math.Between(400, 800)
+        : Phaser.Math.Between(0, 400);
 
-            const x = (this.player.x < 400)
-                ? Phaser.Math.Between(400, 800)
-                : Phaser.Math.Between(0, 400);
-
-            const bomb = this.bombs.create(x, 16, 'bomb');
-            bomb.setBounce(1);
-            bomb.setCollideWorldBounds(true);
-            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-        }
+    const bomb = this.bombs.create(x, 16, 'bomb');
+    bomb.setBounce(1);
+    bomb.setCollideWorldBounds(true);
+    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+}
     }
 
     hitBomb(player, bomb) {
@@ -623,7 +645,7 @@ class GameOverScene extends Phaser.Scene {
         this.add.image(800, 300, 'fundo');
         this.add.image(610, 120, 'gameOver').setScale(1.3);
         // Texto com pontuação final
-        const aura=   this.add.text(610, 300, `☠️Aura: ${this.finalScore}+++`, {
+        const aura = this.add.text(610, 300, `☠️Aura: ${this.finalScore}+++`, {
             fontSize: '40px',
             fill: '#FFA600',         // Amarelo alaranjado baseado na imagem
             stroke: '#000000',       // Contorno preto
@@ -642,7 +664,7 @@ class GameOverScene extends Phaser.Scene {
         })
 
         // Texto "Clique para reiniciar"
-        const reiniciar =   this.add.text(610, 400, 'Clique para reiniciar', {
+        const reiniciar = this.add.text(610, 400, 'Clique para reiniciar', {
             fontSize: '40px',
             fill: '#FFA600',
             stroke: '#000000',
@@ -652,7 +674,7 @@ class GameOverScene extends Phaser.Scene {
 
         ///tweens
         this.tweens.add({
-            targets:reiniciar ,
+            targets: reiniciar,
             alpha: 0.6,
             duration: 800,
             ease: 'Linear',
