@@ -114,11 +114,20 @@ class GameScene extends Phaser.Scene {
         this.load.image('bomb', 'assets/bomb.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
         this.load.image('aviao', 'assets/aviao.png');
-        this.load.spritesheet('aviaoAnimVeloc', 'assets/aviaospritesheet-aumentoVelocidade.png', {
+        this.load.spritesheet('aviaoAnimVeloc', 'assets/aviaospritesheet-aumentoVelocidade.png', {    
             frameWidth: 109,
             frameHeight: 61
 
         });
+        ////////////carregando personagemmmm!!
+
+        this.load.image('frente', 'assets/parado.png');
+        this.load.image('ladoD', 'assets/andando.png');
+        this.load.image('ladoE', 'assets/andando.png');
+        this.load.image('salto', 'assets/salto.png');
+        this.load.image('morreu', 'assets/morreu.png');
+//////////////
+
         this.load.image('chao', 'assets/chaoNovo.png');
 
         this.load.spritesheet('aviaoAnimVelocFase2', 'assets/aviaospritesheet-Velocidade200.png', {
@@ -179,31 +188,14 @@ class GameScene extends Phaser.Scene {
         platforms.create(100, 230, 'ground').setFlipX(true).setScale(0.85).refreshBody();
         
 
-        this.player = this.physics.add.sprite(100, 450, 'dude');
+        this.player = this.physics.add.sprite(100, 450, 'frente');
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
+        this.player.setScale(0.4);
 
         this.jaPerdeu = false;
 
-        this.anims.create({
-            key: 'left',
-            frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-            frameRate: 10,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: 'turn',
-            frames: [{ key: 'dude', frame: 4 }],
-            frameRate: 20
-        });
-
-        this.anims.create({
-            key: 'right',
-            frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-            frameRate: 10,
-            repeat: -1
-        });
+       
 
         this.physics.add.collider(this.player, platforms);
 
@@ -335,14 +327,15 @@ class GameScene extends Phaser.Scene {
         //////////////cursores para andar pular etc
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
-            this.player.anims.play('left', true);
-        } else if (this.cursors.right.isDown) {
+            this.player.setTexture('ladoE');
+        }else if (this.cursors.right.isDown) {
             this.player.setVelocityX(160);
-            this.player.anims.play('right', true);
+            this.player.setTexture('ladoD');
         } else {
             this.player.setVelocityX(0);
-            this.player.anims.play('turn');
+            this.player.setTexture('frente');
         }
+
 
         if (this.cursors.up.isDown && this.player.body.touching.down) {
         this.player.setVelocityY(-330);
