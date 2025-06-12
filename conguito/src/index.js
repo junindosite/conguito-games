@@ -5,24 +5,24 @@ import GameScene2Fase from './GameScene2Fase';
 
 
 /// cena cutscene depois do play
-class CutsceneScene extends Phaser.Scene {
+class Fase2 extends Phaser.Scene {
     constructor() {
-        super({ key: 'CutsceneScene' });
+        super({ key: 'Fase2' });
     }
 
     preload() {
-        this.load.video('cutscene', 'assets/musica/video/Videocutscenes.mp4', 'loadeddata', false, true);
-        this.load.audio('cutsceneAudio', 'assets/musica/cutscene.mp3');
+        this.load.video('Fase2L', 'assets/musica/video/fase2.mp4', 'loadeddata', false, true);
+        this.load.audio('Fase2A', 'assets/musica/fase2A.mp3');
     }
 
     create() {
 
-        const video = this.add.video(this.scale.width / 2, this.scale.height / 2, 'cutscene');
+        const video = this.add.video(this.scale.width / 2, this.scale.height / 2, 'Fase2L');
 
         // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
         video.setDisplaySize(this.scale.width, this.scale.height)
             .setDepth(1).play();
-        const audio = this.sound.add('cutsceneAudio');
+        const audio = this.sound.add('Fase2A');
         audio.play();
         console.log('🎥 Vídeo começou')
 
@@ -31,12 +31,12 @@ class CutsceneScene extends Phaser.Scene {
             video.stop();
             console.log('✅ Vídeo terminou')
             audio.stop();
-            this.scene.start('GameScene');
+            this.scene.start('GameScene2Fase');
         });
         // Ou ir automaticamente para o jogo ao fim do vídeo
         video.on('complete', () => {
             audio.stop();
-            this.scene.start('GameScene');
+            this.scene.start('GameScene2Fase');
 
         });
 
@@ -44,6 +44,7 @@ class CutsceneScene extends Phaser.Scene {
 
     }
 }
+export { Fase2 };
 
 
 
@@ -61,6 +62,7 @@ class CutsceneScene extends Phaser.Scene {
     create() {
 
         const video = this.add.video(this.scale.width / 2, this.scale.height / 2, 'cutscene');
+         this.sound.stopAll();
 
         // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
         video.setDisplaySize(this.scale.width, this.scale.height)
@@ -491,12 +493,11 @@ class GameScene extends Phaser.Scene {
         this.scoreText.setText('☠️Aura: ' + this.score);
 
         /////////FASE 2////////////////
+if (this.score >= 20) {
+    this.scene.start('Fase2', { score: this.score }); // ← Apenas a CUTSCENE
+    return;
+}
 
-        if (this.score >= 200) {
-
-            this.scene.start('GameScene2Fase', { score: this.score }); // *** Passando o score ***
-            return;
-        }
 
         //LOGICA PARA AUMENTO DE VELOCIDADE//
         const pontosAumentoVelocidade = 50; // A cada 50 pontos, aumenta a velocidade
@@ -773,7 +774,7 @@ const config = {
             debug: false
         }
     },
-    scene: [MenuScene, CutsceneScene, GameScene, creditos, GameScene2Fase, GameOverScene],
+    scene: [MenuScene, CutsceneScene, GameScene, creditos, GameScene2Fase, GameOverScene, Fase2],
 
     scale: {
         mode: Phaser.Scale.ENVELOP, // Escala o jogo para caber na tela, mantendo a proporção
