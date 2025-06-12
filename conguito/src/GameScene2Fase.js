@@ -34,7 +34,7 @@ export default class GameScene2Fase extends Phaser.Scene {
 
 
 
-        this.load.audio('gameMusicFase2', 'assets/musica/SomDeFundo.wav'); // Se for música diferente, mude o caminho
+        this.load.audio('gameMusicFase2', 'assets/musica/fase2.mp3'); // Se for música diferente, mude o caminho
         this.load.audio('perdeu', 'assets/musica/perdeu.mp3');
         this.load.audio('pulo', 'assets/musica/pulo.mp3');
         console.log('Preload da Fase 2 concluído.');
@@ -152,7 +152,7 @@ export default class GameScene2Fase extends Phaser.Scene {
         this.sound.stopAll();
         this.gameMusic = this.sound.add('gameMusicFase2', { 
             loop: true,
-            volume: 0.2
+            volume: 0.9
         });
         this.gameMusic.play();
 
