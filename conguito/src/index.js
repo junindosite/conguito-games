@@ -15,12 +15,12 @@ class CutsceneScene extends Phaser.Scene {
     }
 
     create() {
-    
+
         const video = this.add.video(this.scale.width / 2, this.scale.height / 2, 'cutscene');
-             
-       // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
+
+        // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
         video.setDisplaySize(this.scale.width, this.scale.height)
-        .setDepth(1).play();
+            .setDepth(1).play();
         const audio = this.sound.add('cutsceneAudio');
         audio.play();
         console.log('🎥 Vídeo começou')
@@ -34,15 +34,46 @@ class CutsceneScene extends Phaser.Scene {
         });
         // Ou ir automaticamente para o jogo ao fim do vídeo
         video.on('complete', () => {
-        audio.stop();
-        this.scene.start('GameScene');
-        
+            audio.stop();
+            this.scene.start('GameScene');
+
         });
-       
+
 
 
     }
 }
+
+/// cena dos creditossss!!!!!!!! yupii
+class creditos extends Phaser.Scene {
+    constructor() {
+        super({ key: 'creditos' });
+    }
+
+    preload() {
+        this.load.video('creditos', 'assets/musica/video/Creditos.mp4', 'loadeddata', false, true);
+        this.load.audio('cMusica', 'assets/musica/mCreditos.mp3')
+
+    }
+
+    create() {
+
+        const video = this.add.video(this.scale.width / 2, this.scale.height / 2, 'creditos');
+        // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
+        video.setDisplaySize(this.scale.width, this.scale.height)
+            .setDepth(1).play();
+        const audio = this.sound.add('cMusica');
+        audio.play();
+        console.log('🎥 Vídeo começou')
+
+
+    }
+}
+
+
+
+
+
 
 
 // 🎬 Cena do Menu
@@ -53,8 +84,8 @@ export default class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.image('fundo', 'assets/sky.png');
-        this.load.image('startButton', 'assets/play.png'); 
-        this.load.image('conguitoLogo', 'assets/logo.png'); 
+        this.load.image('startButton', 'assets/play.png');
+        this.load.image('conguitoLogo', 'assets/logo.png');
         this.load.audio('menuMusic', 'assets/musica/menu.mp3');
     }
 
@@ -62,12 +93,12 @@ export default class MenuScene extends Phaser.Scene {
         // Fundo
 
         this.add.image(0, 0, 'fundo')
-        .setOrigin(0)
-        .setDisplaySize(this.scale.width, this.scale.height);
+            .setOrigin(0)
+            .setDisplaySize(this.scale.width, this.scale.height);
         // Logo e botão nas posições fixas
         this.add.image(642, 75, 'conguitoLogo').setScale(1.0);
-        const startButton = this.add.image(642, 250, 'startButton') .setScale(0.2)
-        .setInteractive();
+        const startButton = this.add.image(642, 250, 'startButton').setScale(0.2)
+            .setInteractive();
         this.tweens.add({
             targets: startButton,
             alpha: 0.6,
@@ -76,12 +107,12 @@ export default class MenuScene extends Phaser.Scene {
             yoyo: true,
             repeat: -1
         });
-        
+
         startButton.on('pointerdown', () => {
             if (this.menuMusic.isPlaying) {
                 this.menuMusic.stop();
             }
-           this.scene.start('CutsceneScene');
+            this.scene.start('CutsceneScene');
         });
 
         // Tocar música direto (pode ser bloqueado por navegador)
@@ -97,6 +128,23 @@ export default class MenuScene extends Phaser.Scene {
         //    que o jogador clique para mutar/desmutar o áudio da cena.
         this.botaoSom = new BotaoSom(this);
 
+        ///////////////////////////////////////////////////////////////
+
+        ///chamando creditossssss e logoooo
+
+        const creditosText = this.add.text(642, 400, 'creditos', {
+            fontSize: '32px',
+            fill: '#ffffff'
+        });
+
+        // Deixa o texto interativo para receber cliques
+        creditosText.setInteractive();
+
+        // Adiciona o listener de clique
+        creditosText.on('pointerdown', () => {
+            this.scene.start('creditos');
+        });
+        /////////////////////////////////////////////////////
     }
 }
 
@@ -114,7 +162,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('bomb', 'assets/bomb.png');
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
         this.load.image('aviao', 'assets/aviao.png');
-        this.load.spritesheet('aviaoAnimVeloc', 'assets/aviaospritesheet-aumentoVelocidade.png', {    
+        this.load.spritesheet('aviaoAnimVeloc', 'assets/aviaospritesheet-aumentoVelocidade.png', {
             frameWidth: 109,
             frameHeight: 61
 
@@ -126,7 +174,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('ladoE', 'assets/andando.png');
         this.load.image('salto', 'assets/salto.png');
         this.load.image('morreu', 'assets/morreu.png');
-//////////////
+        //////////////
 
         this.load.image('chao', 'assets/chaoNovo.png');
 
@@ -148,8 +196,8 @@ class GameScene extends Phaser.Scene {
 
     create() {
         this.add.image(0, 0, 'sky')
-        .setOrigin(0) // alinha ao canto superior esquerdo
-        .setDisplaySize(this.scale.width, this.scale.height); // redimensiona para preencher
+            .setOrigin(0) // alinha ao canto superior esquerdo
+            .setDisplaySize(this.scale.width, this.scale.height); // redimensiona para preencher
 
         this.score = 0;
         this.gameOver = false;
@@ -159,16 +207,16 @@ class GameScene extends Phaser.Scene {
 
         const platforms = this.physics.add.staticGroup();
 
-         //////////poder pular fase
-          this.input.keyboard.once('keydown-F9', () => {
-             console.log("opa você é Moderador??👩🏻‍💻👩🏻‍💻");
+        //////////poder pular fase
+        this.input.keyboard.once('keydown-F9', () => {
+            console.log("opa você é Moderador??👩🏻‍💻👩🏻‍💻");
             this.scene.start('GameScene2Fase', { score: this.score }); // *** Passando o score ***
             return;
-            
+
         });
-       
-     
-         ///////////CHAOOOO///////////////////
+
+
+        ///////////CHAOOOO///////////////////
 
         platforms.create(0, 699, 'chao').setScale(1.5).refreshBody();
 
@@ -183,10 +231,10 @@ class GameScene extends Phaser.Scene {
         platforms.create(980, 420, 'ground').setScale(0.85).setScale(0.85).refreshBody();
 
         platforms.create(660, 260, 'ground').setScale(1).refreshBody();
-        
+
         platforms.create(1200, 230, 'ground').setScale(0.85).refreshBody();
         platforms.create(100, 230, 'ground').setFlipX(true).setScale(0.85).refreshBody();
-        
+
 
         this.player = this.physics.add.sprite(100, 450, 'frente');
         this.player.setBounce(0.2);
@@ -195,7 +243,7 @@ class GameScene extends Phaser.Scene {
 
         this.jaPerdeu = false;
 
-       
+
 
         this.physics.add.collider(this.player, platforms);
 
@@ -279,7 +327,7 @@ class GameScene extends Phaser.Scene {
             .setVisible(false)
             .setDepth(100)
             .setScale(0.7);
-        
+
         /////////FASE DOIS MINI SPRITE!//////////
         this.anims.create({
 
@@ -289,7 +337,7 @@ class GameScene extends Phaser.Scene {
             repeat: 0,
             hideOnComplete: true
 
-            });
+        });
 
         this.animacaoBombardiloVeloc = this.add.sprite(
             this.scale.width / 2,
@@ -322,13 +370,13 @@ class GameScene extends Phaser.Scene {
         if (this.gameOver) {
             return;
         }
-         
+
 
         //////////////cursores para andar pular etc
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
             this.player.setTexture('ladoE');
-        }else if (this.cursors.right.isDown) {
+        } else if (this.cursors.right.isDown) {
             this.player.setVelocityX(160);
             this.player.setTexture('ladoD');
         } else {
@@ -338,10 +386,10 @@ class GameScene extends Phaser.Scene {
 
 
         if (this.cursors.up.isDown && this.player.body.touching.down) {
-        this.player.setVelocityY(-330);
-        this.sound.play('pulo'); // 🔊 Toca o som do pulo
+            this.player.setVelocityY(-330);
+            this.sound.play('pulo'); // 🔊 Toca o som do pulo
         }
-   /////////////////////////////////////////
+        /////////////////////////////////////////
     }
 
     collectStar(player, star) {
@@ -352,7 +400,7 @@ class GameScene extends Phaser.Scene {
 
         /////////FASE 2////////////////
 
-        if(this.score >= 30){
+        if (this.score >= 30) {
 
             this.scene.start('GameScene2Fase', { score: this.score }); // *** Passando o score ***
             return;
@@ -584,7 +632,7 @@ class GameOverScene extends Phaser.Scene {
     }
 }
 
-    
+
 
 
 window.configuracoesJogo = {
@@ -602,7 +650,7 @@ const config = {
             debug: false
         }
     },
-    scene: [MenuScene, CutsceneScene ,GameScene, GameScene2Fase, GameOverScene],
+    scene: [MenuScene, CutsceneScene, GameScene, creditos, GameScene2Fase, GameOverScene],
 
     scale: {
         mode: Phaser.Scale.ENVELOP, // Escala o jogo para caber na tela, mantendo a proporção
