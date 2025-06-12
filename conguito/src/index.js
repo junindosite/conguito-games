@@ -433,7 +433,7 @@ class GameScene extends Phaser.Scene {
 
         /////////FASE 2////////////////
 
-        if (this.score >= 30) {
+        if (this.score >= 200) {
 
             this.scene.start('GameScene2Fase', { score: this.score }); // *** Passando o score ***
             return;
