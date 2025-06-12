@@ -10,8 +10,8 @@ class CutsceneScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.video('cutscene', 'assets/musica/video/catsine.mp4', 'loadeddata', false, true);
-        this.load.audio('cutsceneAudio', 'assets/musica/catsine.mp3');
+        this.load.video('cutscene', 'assets/musica/video/Videocutscenes.mp4', 'loadeddata', false, true);
+        this.load.audio('cutsceneAudio', 'assets/musica/cutscene.mp3');
     }
 
     create() {
