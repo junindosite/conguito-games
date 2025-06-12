@@ -31,6 +31,7 @@ export default class GameScene2Fase extends Phaser.Scene {
         //////////FASE 2////////////////////
         this.load.image('sky2', 'assets/FundoFase2.png'); 
         this.load.image('aviao2', 'assets/AviaoFase2.png');
+        this.load.audio('coletar', 'assets/musica/coletar.mp3');
 
 
 
@@ -215,27 +216,25 @@ export default class GameScene2Fase extends Phaser.Scene {
 
     collectStar(player, star) {
         star.disableBody(true, true);
+        this.sound.play('coletar');
+
 
         this.score += 10;
         this.scoreText.setText('☠️Aura: ' + this.score);
         console.log(`[GameScene2Fase - COLLECT] Score atualizado: ${this.score}`);
 
 
-        if (this.stars.countActive(true) === 0) {
-            this.stars.children.iterate(function (child) {
-                child.enableBody(true, child.x, 0, true, true);
-            });
-
-            const x = (this.player.x < 400)
-                ? Phaser.Math.Between(400, 800)
-                : Phaser.Math.Between(0, 400);
-
-            const bomb = this.bombs.create(x, 16, 'bombHF'); 
-            bomb.setBounce(1);
-            bomb.setCollideWorldBounds(true);
-            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-            bomb.setScale(0.7);
-        }
+         if (this.stars.countActive(true) === 0) {
+              console.log("🍌 Reaparecendo bananas - versão simplificada");
+              this.stars.children.iterate((estrela) => {
+                  const xAleatorio = Phaser.Math.Between(50, this.scale.width - 50);
+                  const yAleatorio = Phaser.Math.Between(100, 500); // Altura acessível
+                  
+                  estrela.enableBody(true, xAleatorio, yAleatorio, true, true);
+                  estrela.setVelocity(0, 0); // Sem movimento inicial
+                  estrela.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+              });
+            }
 
         const pontosAumentoVelocidade = 50;
         const valorAumentoVelocidade = 10;
