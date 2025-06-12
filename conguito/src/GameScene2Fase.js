@@ -17,19 +17,23 @@ export default class GameScene2Fase extends Phaser.Scene {
     preload() {
         console.log('Iniciando preload da Fase 2...');
         // Por favor, verifique se todos esses assets estão na pasta 'assets' com esses nomes exatos.
-        this.load.image('sky', 'assets/skyNovo.png'); 
         this.load.image('ground', 'assets/plataformavoa.png');
         this.load.image('star', 'assets/banana.png');
         this.load.image('bombHF', 'assets/bomb.png'); // Se for uma bomba diferente para Fase 2, use 'assets/bombHF.png'
         this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-        this.load.image('aviao', 'assets/BombarFase2.png');
         this.load.spritesheet('aviaoAnimVelocFase2', 'assets/aviaospritesheet-Velocidade200.png', {
             frameWidth: 109,
             frameHeight: 61
         });
         this.load.image('chao', 'assets/chaoNovo.png');
         this.load.image('morto', 'assets/morto.png'); 
-        
+
+        //////////FASE 2////////////////////
+        this.load.image('sky2', 'assets/FundoFase2.png'); 
+        this.load.image('aviao2', 'assets/AviaoFase2.png');
+
+
+
         this.load.audio('gameMusicFase2', 'assets/musica/SomDeFundo.wav'); // Se for música diferente, mude o caminho
         this.load.audio('perdeu', 'assets/musica/perdeu.mp3');
         console.log('Preload da Fase 2 concluído.');
@@ -38,7 +42,7 @@ export default class GameScene2Fase extends Phaser.Scene {
     create() {
         console.log('[GameScene2Fase - CREATE] Executado. Score antes de inicializar elementos: ' + this.score);
 
-        this.add.image(0, 0, 'sky')
+        this.add.image(0, 0, 'sky2')
             .setOrigin(0)
             .setDisplaySize(this.scale.width, this.scale.height);
 
@@ -125,7 +129,7 @@ export default class GameScene2Fase extends Phaser.Scene {
         console.log('[GameScene2Fase - CREATE] ScoreText inicializado com: ' + this.score);
 
 
-        this.aviao = this.physics.add.sprite(400, 50, 'aviao').setScale(0.7);
+        this.aviao = this.physics.add.sprite(400, 50, 'aviao2').setScale(0.7);
         this.velocidadeBaseAviao = 150;
         this.aviao.setVelocityX(this.velocidadeBaseAviao);
         this.aviao.setCollideWorldBounds(true);
