@@ -52,7 +52,7 @@ export default class MenuScene extends Phaser.Scene {
         this.load.image('fundo', 'assets/sky.png');
         this.load.image('startButton', 'assets/play.png'); 
         this.load.image('conguitoLogo', 'assets/logo.png'); 
-        this.load.audio('menuMusic', 'assets/musica/.mp3');// COLOCAR MUSICA
+        this.load.audio('menuMusic', 'assets/musica/menu.mp3');
     }
 
     create() {
@@ -88,7 +88,7 @@ export default class MenuScene extends Phaser.Scene {
         this.sound.stopAll();
         this.menuMusic = this.sound.add('menuMusic', {
             loop: true,
-            volume: 0.3
+            volume: 0.9
         });
 
         this.menuMusic.play();
