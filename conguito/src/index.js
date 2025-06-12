@@ -116,6 +116,7 @@ class GameScene extends Phaser.Scene {
             frameHeight: 61
 
         });
+        this.load.image('chao', 'assets/chaoNovo.png');
 
         //precisa adicionar frame de personagem morto!!!!!!!!!!!!!!
         //ataque tmb !!!!!!!
@@ -138,10 +139,27 @@ class GameScene extends Phaser.Scene {
 
 
         const platforms = this.physics.add.staticGroup();
-        platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-        platforms.create(600, 400, 'ground');
-        platforms.create(50, 250, 'ground');
-        platforms.create(750, 220, 'ground');
+
+     
+         ///////////CHAOOOO///////////////////
+
+        platforms.create(0, 699, 'chao').setScale(1.5).refreshBody();
+
+        platforms.create(600, 699, 'chao').setScale(1.5).refreshBody();
+
+        platforms.create(1200, 699, 'chao').setScale(1.5).refreshBody();
+
+        //////////////////////PLATAFORMAS///////////////////
+
+        platforms.create(640, 560, 'ground').setFlipX(true).setScale(0.9).refreshBody();
+        platforms.create(300, 420, 'ground').setScale(0.85).refreshBody();
+        platforms.create(980, 420, 'ground').setScale(0.85).setScale(0.85).refreshBody();
+
+        platforms.create(660, 260, 'ground').setScale(1).refreshBody();
+        
+        platforms.create(1200, 230, 'ground').setScale(0.85).refreshBody();
+        platforms.create(100, 230, 'ground').setFlipX(true).setScale(0.85).refreshBody();
+        
 
         this.player = this.physics.add.sprite(100, 450, 'dude');
         this.player.setBounce(0.2);
@@ -199,7 +217,7 @@ class GameScene extends Phaser.Scene {
 
 
         // Avião no topo da tela
-        this.aviao = this.physics.add.sprite(400, 40, 'aviao').setScale(0.7);
+        this.aviao = this.physics.add.sprite(400, 50, 'aviao').setScale(0.7);
         this.velocidadeBaseAviao = 150;
         this.aviao.setVelocityX(this.velocidadeBaseAviao);
         this.aviao.setCollideWorldBounds(true);
@@ -253,7 +271,7 @@ class GameScene extends Phaser.Scene {
     update() {
 
         ///////////Aviao Voando////////////////
-        this.aviao.y = 40; // Mantém o avião em uma só altura
+        this.aviao.y = 50; // Mantém o avião em uma só altura
 
         const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;// Para a soma de velocidade do aviao.
 
