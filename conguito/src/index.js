@@ -201,6 +201,9 @@ class GameScene extends Phaser.Scene {
 
         this.stars.children.iterate((child) => {
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+            child.setScale(0.12);
+            child.setFlipX(0.5);
+            child.angle = 15;
         });
 
         this.physics.add.collider(this.stars, platforms);
