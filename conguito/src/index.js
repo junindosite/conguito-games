@@ -89,7 +89,7 @@ export default class MenuScene extends Phaser.Scene {
 
     preload() {
         this.load.image('fundo', 'assets/sky.png');
-        this.load.image('startButton', 'assets/play.png');
+        this.load.image('startButton', 'assets/playMenu.png');
         this.load.image('conguitoLogo', 'assets/logo.png');
         this.load.audio('menuMusic', 'assets/musica/menu.mp3');
         this.load.image('logoC', 'assets/logoCreditos.png');
@@ -112,7 +112,7 @@ export default class MenuScene extends Phaser.Scene {
             repeat: -1
         });
 
-        const startButton = this.add.image(610, 250, 'startButton').setScale(0.2)
+        const startButton = this.add.image(610, 220, 'startButton').setScale(0.9)
             .setInteractive();
         this.tweens.add({
             targets: startButton,
