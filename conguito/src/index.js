@@ -193,7 +193,7 @@ class GameScene extends Phaser.Scene {
         this.physics.add.collider(this.bombs, platforms);
         this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
 
-        this.scoreText = this.add.text(16, 16, 'Score: 0', {
+        this.scoreText = this.add.text(16, 16, '☠️Aura: 0', {
             fontSize: '32px',
             fill: '#fff',
             stroke: '#000',
@@ -295,7 +295,7 @@ class GameScene extends Phaser.Scene {
         star.disableBody(true, true);
 
         this.score += 10;
-        this.scoreText.setText('Score: ' + this.score);
+        this.scoreText.setText('☠️Aura: ' + this.score);
 
         //LOGICA PARA AUMENTO DE VELOCIDADE//
         const pontosAumentoVelocidade = 50; // A cada 50 pontos, aumenta a velocidade
@@ -391,7 +391,7 @@ class GameScene extends Phaser.Scene {
             }, [], this);
 
         } else {
-            console.log(`Score atual: ${this.score}. Não é hora de aumentar a velocidade.`);
+            console.log(`Aura atual: ${this.score}. Não é hora de aumentar a velocidade.`);
 
             const velocidadeAtual = this.velocidadeBaseAviao + this.scoreVelocidade;
             if (this.aviao.body.velocity.x > 0) { // Se estiver indo para a direita
@@ -478,7 +478,7 @@ class GameOverScene extends Phaser.Scene {
 
     create() {
         this.add.image(800, 300, 'fundo');
-        this.add.text(380, 300, `Score: ${this.finalScore}`, {
+        this.add.text(380, 300, `☠️Aura: ${this.finalScore}+++`, {
             fontSize: '32px',
             fill: '#fff',
             stroke: '#000',
