@@ -22,10 +22,12 @@ class CutsceneScene extends Phaser.Scene {
         .setDepth(1).play();
         const audio = this.sound.add('cutsceneAudio');
         audio.play();
+        console.log('🎥 Vídeo começou')
 
         // Pular com ENTER
         this.input.keyboard.once('keydown-SPACE', () => {
             video.stop();
+            console.log('✅ Vídeo terminou')
             audio.stop();
             this.scene.start('GameScene');
         });
@@ -33,10 +35,10 @@ class CutsceneScene extends Phaser.Scene {
         video.on('complete', () => {
         audio.stop();
         this.scene.start('GameScene');
+        
         });
-        video.on('play', () => console.log('🎥 Vídeo começou'));
-        video.on('complete', () => console.log('✅ Vídeo terminou'));
-        video.on('error', (e) => console.error('❌ Erro no vídeo:', e));
+       
+
 
     }
 }
