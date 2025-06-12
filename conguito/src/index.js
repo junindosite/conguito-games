@@ -146,15 +146,29 @@ export default class MenuScene extends Phaser.Scene {
             yoyo: true,
             repeat: -1
         });
-            
-        // Deixa o texto interativo para receber cliques
-        
 
-        // Adiciona o listener de clique
+        // o listener de clique
        credito.on('pointerdown', () => {
             this.scene.start('creditos');
         });
         /////////////////////////////////////////////////////
+
+       const f11= this.add.text(610, 660, 'Pressione F11 para melhor experiência', {
+            fontSize: '40px',
+            fill: '#FFA600',       
+            stroke: '#000000',       
+            strokeThickness: 4,      
+            fontFamily: 'Arial'      
+        }).setOrigin(0.5);
+
+            this.tweens.add({
+            targets: f11 ,
+            alpha: 0.6,
+            duration: 800,
+            ease: 'Linear',
+            yoyo: true,
+            repeat: -1
+        });
     }
 }
 
