@@ -67,7 +67,7 @@ export default class MenuScene extends Phaser.Scene {
         .setInteractive();
         this.tweens.add({
             targets: startButton,
-            alpha: 0.3,
+            alpha: 0.6,
             duration: 800,
             ease: 'Linear',
             yoyo: true,
@@ -475,22 +475,22 @@ class GameOverScene extends Phaser.Scene {
 
     create() {
         this.add.image(800, 300, 'fundo');
-        this.add.text(380, 300, `☠️Aura: ${this.finalScore}+++`, {
+        this.add.text(642, 300, `☠️Aura: ${this.finalScore}+++`, {
             fontSize: '32px',
             fill: '#fff',
             stroke: '#000',
             strokeThickness: 3
         }).setOrigin(0.5);
-        this.add.text(400, 400, 'Clique para reiniciar', {
+        this.add.text(642, 400, 'Clique para reiniciar', {
             fontSize: '40px',
             fill: '#fff',
             stroke: '#000',
             strokeThickness: 3
         }).setOrigin(0.5);
-        this.add.image(380, 200, 'gameOver');
+        this.add.image(642, 120, 'gameOver').setScale(1.0);
         this.botaoSom = new BotaoSom(this);
 
-        const botaoVoltar = this.add.image(360, 460, 'volta')// variavel recebe imagem
+        const botaoVoltar = this.add.image(642, 460, 'volta')// variavel recebe imagem
             .setScale(2.5)
             .setInteractive();
         //animação botao TWEENS BOTAO RODANDO
