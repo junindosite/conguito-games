@@ -133,14 +133,14 @@ class GameScene extends Phaser.Scene {
         //audios
         this.load.audio('gameMusic', 'assets/musica/SomDeFundo.wav');// som de fundo do jogo
         this.load.audio('perdeu', 'assets/musica/perdeu.mp3');
-        this.load.audio('pulo', 'assets/musica/pulo');
+        this.load.audio('pulo', 'assets/musica/pulo.mp3');
 
     }
 
     create() {
         this.add.image(0, 0, 'sky')
-            .setOrigin(0) // alinha ao canto superior esquerdo
-            .setDisplaySize(this.scale.width, this.scale.height); // redimensiona para preencher
+        .setOrigin(0) // alinha ao canto superior esquerdo
+        .setDisplaySize(this.scale.width, this.scale.height); // redimensiona para preencher
 
         this.score = 0;
         this.gameOver = false;
@@ -150,6 +150,15 @@ class GameScene extends Phaser.Scene {
 
         const platforms = this.physics.add.staticGroup();
 
+         //////////poder pular fase
+          this.input.keyboard.once('keydown-F9', () => {
+             console.log("opa você é Moderador??👩🏻‍💻👩🏻‍💻");
+            this.scene.start('GameScene2Fase', { score: this.score }); // *** Passando o score ***
+           
+            return;
+            
+        });
+       
      
          ///////////CHAOOOO///////////////////
 
@@ -322,7 +331,9 @@ class GameScene extends Phaser.Scene {
         if (this.gameOver) {
             return;
         }
+         
 
+        //////////////cursores para andar pular etc
         if (this.cursors.left.isDown) {
             this.player.setVelocityX(-160);
             this.player.anims.play('left', true);
@@ -335,8 +346,10 @@ class GameScene extends Phaser.Scene {
         }
 
         if (this.cursors.up.isDown && this.player.body.touching.down) {
-            this.player.setVelocityY(-330);
+        this.player.setVelocityY(-330);
+        this.sound.play('pulo'); // 🔊 Toca o som do pulo
         }
+   /////////////////////////////////////////
     }
 
     collectStar(player, star) {
@@ -347,7 +360,7 @@ class GameScene extends Phaser.Scene {
 
         /////////FASE 2////////////////
 
-        if(this.score >= 60){
+        if(this.score >= 30){
 
             this.scene.start('GameScene2Fase', { score: this.score }); // *** Passando o score ***
             return;
