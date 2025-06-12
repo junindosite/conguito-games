@@ -57,7 +57,7 @@ class creditos extends Phaser.Scene {
     }
 
     create() {
-
+        this.sound.stopAll();
         const video = this.add.video(this.scale.width / 2, this.scale.height / 2, 'creditos');
         // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
         video.setDisplaySize(this.scale.width, this.scale.height)
@@ -65,7 +65,12 @@ class creditos extends Phaser.Scene {
         const audio = this.sound.add('cMusica');
         audio.play();
         console.log('🎥 Vídeo começou')
+         
+        video.on('complete', () => {
+        audio.stop();
+        this.scene.start('MenuScene');
 
+        });
 
     }
 }
