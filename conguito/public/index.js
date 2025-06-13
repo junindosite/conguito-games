@@ -252,8 +252,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('ladoD', 'assets/andando.png');
         this.load.image('ladoE', 'assets/andando.png');
         this.load.image('salto', 'assets/salto.png');
-        this.load.image('mortoD', 'assets/mortoD.png');
-        this.load.image('mortoE', 'assets/mortoE.png');
+        this.load.image('morto', 'assets/morto.png');
         //////////////
 
         this.load.image('chao', 'assets/chaoNovo.png');
@@ -264,8 +263,6 @@ class GameScene extends Phaser.Scene {
 
         });
 
-        //precisa adicionar frame de personagem morto!!!!!!!!!!!!!!
-        //ataque tmb !!!!!!!
 
         //audios
         this.load.audio('gameMusic', 'assets/musica/SomDeFundo.wav');// som de fundo do jogo
@@ -638,11 +635,8 @@ if (this.score >= 200) {
     hitBomb(player, bomb) {
         this.physics.pause();
         this.cameras.main.shake(300, 0.02);
-         player.setTint(0xff0000);
-        player.anims.play('turn');
         player.setTint(0xff0000);
-        player.anims.play('turn');
-
+    
         this.gameOver = true;
 
         this.perdeu();
@@ -657,12 +651,10 @@ if (this.score >= 200) {
         }
 
         // Trocar textura do sprite por outro (sem sumir com ele)
-        if(this.player.Flipx){
-        
-            this.player.setTexture('mortoE').setScale(0.8); // ← precisa carregar essa imagem no preload
-        
-        }else{
-            this.player.setTexture('mortoD').setScale(0.8);
+        if(this.player.flipX){ // Se o jogador estava virado para a esquerda 
+            this.player.setTexture('morto').setScale(0.35).setFlipX(true); // Define a textura para morto para a esquerda
+        } else { // Se o jogador estava virado para a direita (flipX é false)
+            this.player.setTexture('morto').setScale(0.35); // Define a textura para morto para a direita
         }
 
         // Parar a física para o jogador não continuar se mexendo
