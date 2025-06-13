@@ -88,6 +88,11 @@ export default class GameScene2Fase extends Phaser.Scene {
 
          this.jaPerdeu = false;
 
+        ///REFERENCIANDO AS TECLAS WAD e ESPAÇO
+            this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+            this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+            this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+            this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.physics.add.collider(this.player, platforms);
 
@@ -199,21 +204,20 @@ export default class GameScene2Fase extends Phaser.Scene {
             return;
         }
 
-        if (this.cursors.left.isDown) {
+        if (this.cursors.left.isDown || this.keyA.isDown) {
             this.player.setVelocityX(-160);
             this.player.setTexture('ladoE');
             this.player.setFlipX(true);
-        } else if (this.cursors.right.isDown) {
+        } else if (this.cursors.right.isDown || this.keyD.isDown) {
             this.player.setVelocityX(160);
-            this.player.setTexture('ladoE');
+            this.player.setTexture('ladoD');
             this.player.setFlipX(false);
         } else {
             this.player.setVelocityX(0);
             this.player.setTexture('frente');
         }
 
-
-        if (this.cursors.up.isDown && this.player.body.touching.down) {
+        if ((this.cursors.up.isDown || this.keyW.isDown || this.keySpace.isDown) && this.player.body.touching.down) {
             this.player.setVelocityY(-330);
             this.sound.play('pulo'); // 🔊 Toca o som do pulo
         }
@@ -351,7 +355,7 @@ export default class GameScene2Fase extends Phaser.Scene {
             this.gameMusic.stop();
         }
 
-        this.player.setTexture('morto'); 
+        this.player.setTexture('morto').setScale(0.8);
         this.player.setVelocity(0, 0);
         this.player.body.enable = false;
 

@@ -3,51 +3,6 @@ import BotaoSom from './SoundButton';
 import GameScene2Fase from './GameScene2Fase';
 
 
-
-/// cena cutscene depois do play
-class Fase2 extends Phaser.Scene {
-    constructor() {
-        super({ key: 'Fase2' });
-    }
-
-    preload() {
-        this.load.video('Fase2L', 'assets/musica/video/fase2.mp4', 'loadeddata', false, true);
-        this.load.audio('Fase2A', 'assets/musica/fase2A.mp3');
-    }
-
-    create() {
-
-        const video = this.add.video(this.scale.width / 2, this.scale.height / 2, 'Fase2L');
-
-        // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
-        video.setDisplaySize(this.scale.width, this.scale.height)
-            .setDepth(1).play();
-        const audio = this.sound.add('Fase2A');
-        audio.play();
-        console.log('🎥 Vídeo começou')
-
-        // Pular com ENTER
-        this.input.keyboard.once('keydown-SPACE', () => {
-            video.stop();
-            console.log('✅ Vídeo terminou')
-            audio.stop();
-            this.scene.start('GameScene2Fase');
-        });
-        // Ou ir automaticamente para o jogo ao fim do vídeo
-        video.on('complete', () => {
-            audio.stop();
-            this.scene.start('GameScene2Fase');
-
-        });
-
-
-
-    }
-}
-export { Fase2 };
-
-
-
 /// cena cutscene depois do play
 class CutsceneScene extends Phaser.Scene {
     constructor() {
@@ -62,7 +17,6 @@ class CutsceneScene extends Phaser.Scene {
     create() {
 
         const video = this.add.video(this.scale.width / 2, this.scale.height / 2, 'cutscene');
-         this.sound.stopAll();
 
         // Ajusta o vídeo para ocupar toda a tela, mantendo proporção
         video.setDisplaySize(this.scale.width, this.scale.height)
@@ -252,8 +206,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('ladoD', 'assets/andando.png');
         this.load.image('ladoE', 'assets/andando.png');
         this.load.image('salto', 'assets/salto.png');
-        this.load.image('mortoD', 'assets/mortoD.png');
-        this.load.image('mortoE', 'assets/mortoE.png');
+        this.load.image('morreu', 'assets/morreu.png');
         //////////////
 
         this.load.image('chao', 'assets/chaoNovo.png');
@@ -271,7 +224,7 @@ class GameScene extends Phaser.Scene {
         this.load.audio('gameMusic', 'assets/musica/SomDeFundo.wav');// som de fundo do jogo
         this.load.audio('perdeu', 'assets/musica/perdeu.mp3');
         this.load.audio('pulo', 'assets/musica/pulo.mp3');
-        this.load.audio('coletar', 'assets/musica/coletar.mp3');
+
     }
 
     create() {
@@ -323,34 +276,17 @@ class GameScene extends Phaser.Scene {
 
         this.jaPerdeu = false;
 
-        ///REFERENCIANDO AS TECLAS WAD e ESPAÇO
-        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
-        this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
-        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
-        this.keySpace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
 
         this.physics.add.collider(this.player, platforms);
 
         this.cursors = this.input.keyboard.createCursorKeys();
-        ///////////////////////////////////////////////////////////////
-        ////// conguitaaaaaa
-        // Cria o grupo de estrelas (bananas)
-        this.stars = this.physics.add.group();
 
-        // Gera 10 estrelas com posições aleatórias **em toda a tela**
-        for (let i = 0; i < 11; i++) {
-            const xAleatorio = Phaser.Math.Between(50, this.scale.width - 50);
-            const yAleatorio = Phaser.Math.Between(100, this.scale.height - 100); // Agora é em qualquer lugar visível
-
-            const star = this.stars.create(xAleatorio, yAleatorio, 'star');
-            star.setBounce(0.3);
-            star.setCollideWorldBounds(true);
-            star.setScale(0.12);
-            star.setFlipX(0.5);
-            star.angle = 15;
-        }
-
-        //////////////////////////////////////////////////////////////
+        this.stars = this.physics.add.group({
+            key: 'star',
+            repeat: 11,
+            setXY: { x: 12, y: 0, stepX: 70 }
+        });
 
         this.stars.children.iterate((child) => {
             child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
@@ -373,6 +309,10 @@ class GameScene extends Phaser.Scene {
             strokeThickness: 3
         });
 
+        // Adiciona referências para as teclas W, A, D Atalhos
+        this.keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        this.keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        this.keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
 
         // Avião no topo da tela
         this.aviao = this.physics.add.sprite(400, 50, 'aviao').setScale(0.7);
@@ -469,21 +409,20 @@ class GameScene extends Phaser.Scene {
         }
 
 
-        //////////////cursores para andar pular etc 
+        //////////////cursores para andar pular etc
         if (this.cursors.left.isDown || this.keyA.isDown) {
             this.player.setVelocityX(-160);
             this.player.setTexture('ladoE');
-            this.player.setFlipX(true);
         } else if (this.cursors.right.isDown || this.keyD.isDown) {
             this.player.setVelocityX(160);
             this.player.setTexture('ladoD');
-            this.player.setFlipX(false);
         } else {
             this.player.setVelocityX(0);
             this.player.setTexture('frente');
         }
 
-        if ((this.cursors.up.isDown || this.keyW.isDown || this.keySpace.isDown) && this.player.body.touching.down) {
+
+        if ((this.cursors.up.isDown || this.keyW.isDown) && this.player.body.touching.down) {
             this.player.setVelocityY(-330);
             this.sound.play('pulo'); // 🔊 Toca o som do pulo
         }
@@ -492,18 +431,17 @@ class GameScene extends Phaser.Scene {
 
     collectStar(player, star) {
         star.disableBody(true, true);
-        this.sound.play('coletar');
-
 
         this.score += 10;
         this.scoreText.setText('☠️Aura: ' + this.score);
 
         /////////FASE 2////////////////
-if (this.score >= 200) {
-    this.scene.start('Fase2', { score: this.score }); // ← Apenas a CUTSCENE
-    return;
-}
 
+        if (this.score >= 200) {
+
+            this.scene.start('GameScene2Fase', { score: this.score }); // *** Passando o score ***
+            return;
+        }
 
         //LOGICA PARA AUMENTO DE VELOCIDADE//
         const pontosAumentoVelocidade = 50; // A cada 50 pontos, aumenta a velocidade
@@ -611,35 +549,26 @@ if (this.score >= 200) {
         }
 
         //////////////////////////////////////////////
-        // se nao houver mais ira reaparecer em local aleatorio
-         if (this.stars.countActive(true) === 0) {
-        console.log("🍌 Reaparecendo bananas - versão simplificada");
-        this.stars.children.iterate((estrela) => {
-            const xAleatorio = Phaser.Math.Between(50, this.scale.width - 50);
-            const yAleatorio = Phaser.Math.Between(100, 500); // Altura acessível
-            
-            estrela.enableBody(true, xAleatorio, yAleatorio, true, true);
-            estrela.setVelocity(0, 0); // Sem movimento inicial
-            estrela.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-        });
 
-    // Código existente para lançar uma bomba quando as estrelas reaparecem
-    const x = (this.player.x < 400)
-        ? Phaser.Math.Between(400, 800)
-        : Phaser.Math.Between(0, 400);
+        if (this.stars.countActive(true) === 0) {
+            this.stars.children.iterate(function (child) {
+                child.enableBody(true, child.x, 0, true, true);
+            });
 
-    const bomb = this.bombs.create(x, 16, 'bomb');
-    bomb.setBounce(1);
-    bomb.setCollideWorldBounds(true);
-    bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-}
+            const x = (this.player.x < 400)
+                ? Phaser.Math.Between(400, 800)
+                : Phaser.Math.Between(0, 400);
+
+            const bomb = this.bombs.create(x, 16, 'bomb');
+            bomb.setBounce(1);
+            bomb.setCollideWorldBounds(true);
+            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+        }
     }
 
     hitBomb(player, bomb) {
         this.physics.pause();
-        this.cameras.main.shake(300, 0.02);
-         player.setTint(0xff0000);
-        player.anims.play('turn');
+
         player.setTint(0xff0000);
         player.anims.play('turn');
 
@@ -657,13 +586,7 @@ if (this.score >= 200) {
         }
 
         // Trocar textura do sprite por outro (sem sumir com ele)
-        if(this.player.Flipx){
-        
-            this.player.setTexture('mortoE').setScale(0.8); // ← precisa carregar essa imagem no preload
-        
-        }else{
-            this.player.setTexture('mortoD').setScale(0.8);
-        }
+        this.player.setTexture('morto').setScale(0.8); // ← precisa carregar essa imagem no preload
 
         // Parar a física para o jogador não continuar se mexendo
         this.player.setVelocity(0, 0);
@@ -704,7 +627,7 @@ class GameOverScene extends Phaser.Scene {
         this.add.image(800, 300, 'fundo');
         this.add.image(610, 120, 'gameOver').setScale(1.3);
         // Texto com pontuação final
-        const aura = this.add.text(610, 300, `☠️Aura: ${this.finalScore}+++`, {
+        const aura=   this.add.text(610, 300, `☠️Aura: ${this.finalScore}+++`, {
             fontSize: '40px',
             fill: '#FFA600',         // Amarelo alaranjado baseado na imagem
             stroke: '#000000',       // Contorno preto
@@ -723,7 +646,7 @@ class GameOverScene extends Phaser.Scene {
         })
 
         // Texto "Clique para reiniciar"
-        const reiniciar = this.add.text(610, 400, 'Clique para reiniciar', {
+        const reiniciar =   this.add.text(610, 400, 'Clique para reiniciar', {
             fontSize: '40px',
             fill: '#FFA600',
             stroke: '#000000',
@@ -733,7 +656,7 @@ class GameOverScene extends Phaser.Scene {
 
         ///tweens
         this.tweens.add({
-            targets: reiniciar,
+            targets:reiniciar ,
             alpha: 0.6,
             duration: 800,
             ease: 'Linear',
@@ -788,7 +711,7 @@ const config = {
             debug: false
         }
     },
-    scene: [MenuScene, CutsceneScene, GameScene, creditos, GameScene2Fase, GameOverScene, Fase2],
+    scene: [MenuScene, CutsceneScene, GameScene, creditos, GameScene2Fase, GameOverScene],
 
     scale: {
         mode: Phaser.Scale.ENVELOP, // Escala o jogo para caber na tela, mantendo a proporção
