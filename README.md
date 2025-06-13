@@ -45,7 +45,7 @@ O projeto foi proposto por **Hugo Fumero**, com o desafio de desenvolver um jogo
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/seu-jogo.git
+   git clone https://github.com/junindosite/conguito-games.git
 Abra o arquivo index.html em um navegador moderno.
 
 Divirta-se!
