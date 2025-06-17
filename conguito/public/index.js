@@ -254,6 +254,13 @@ class GameScene extends Phaser.Scene {
 
         });
 
+        ///Pulando///
+        this.load.spritesheet('pulando', 'assets/pulando.png',{
+            frameWidth: 150,
+            frameHeight: 135
+
+        });
+
         this.load.image('ladoD', 'assets/andando.png');
         this.load.image('ladoE', 'assets/andando.png');
         this.load.image('salto', 'assets/salto.png');
@@ -394,6 +401,14 @@ class GameScene extends Phaser.Scene {
         });
         this.player.play('spriteparado');
 
+        ////Sprite pulando animação////
+
+         this.anims.create({
+            key: 'spritepulando',
+            frames: this.anims.generateFrameNumbers('pulando', { start: 0, end: 4 }),
+            frameRate: 8, // Ajuste este valor para controlar a velocidade da respiração
+            repeat: 0 // Loop infinito
+        });
 
         // Timer que solta bombas a cada 5 segundos
         this.time.addEvent({
@@ -494,17 +509,22 @@ class GameScene extends Phaser.Scene {
         } else {
             this.player.setVelocityX(0);
              if (this.player.body.touching.down && !this.player.anims.isPlaying) {
-                this.player.play('idleBreathingAnim');
+                this.player.play('spriteparado');
             // Adicione this.player.setFlipX(false); ou true se sua animação precisar.
     }
         }
 
         if ((this.cursors.up.isDown || this.keyW.isDown || this.keySpace.isDown) && this.player.body.touching.down) {
             this.player.setVelocityY(-330);
+            this.player.play('spritepulando');
             this.sound.play('pulo'); // 🔊 Toca o som do pulo
         }
-        /////////////////////////////////////////
+
+       
     }
+
+
+        /////////////////////////////////////////
 
     collectStar(player, star) {
         star.disableBody(true, true);
