@@ -239,7 +239,7 @@ class GameScene extends Phaser.Scene {
         this.load.image('ground', 'assets/plataformavoa.png');
         this.load.image('star', 'assets/banana.png');
         this.load.image('bomb', 'assets/bomb.png');
-        this.load.spritesheet('dude', 'assets/dude.png', { frameWidth: 32, frameHeight: 48 });
+       
         this.load.image('aviao', 'assets/aviao.png');
         this.load.spritesheet('aviaoAnimVeloc', 'assets/aviaospritesheet-aumentoVelocidade.png', {
             frameWidth: 109,
@@ -248,7 +248,12 @@ class GameScene extends Phaser.Scene {
         });
         ////////////carregando personagemmmm!!
 
-        this.load.image('frente', 'assets/parado.png');
+        this.load.spritesheet('parado', 'assets/spriteparado.png',{
+            frameWidth: 150,
+            frameHeight: 140
+
+        });
+
         this.load.image('ladoD', 'assets/andando.png');
         this.load.image('ladoE', 'assets/andando.png');
         this.load.image('salto', 'assets/salto.png');
@@ -313,7 +318,7 @@ class GameScene extends Phaser.Scene {
         platforms.create(100, 230, 'ground').setFlipX(true).setScale(0.85).refreshBody();
 
 
-        this.player = this.physics.add.sprite(100, 450, 'frente');
+        this.player = this.physics.add.sprite(100, 450, 'parado');
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.player.setScale(0.4);
@@ -330,7 +335,7 @@ class GameScene extends Phaser.Scene {
 
         this.cursors = this.input.keyboard.createCursorKeys();
         ///////////////////////////////////////////////////////////////
-        ////// conguitaaaaaa
+        
         // Cria o grupo de estrelas (bananas)
         this.stars = this.physics.add.group();
 
@@ -378,6 +383,17 @@ class GameScene extends Phaser.Scene {
         this.aviao.setCollideWorldBounds(true);
         this.aviao.setBounce(1, 0);
         this.aviao.body.allowGravity = false; // Avião não é afetado pela gravidade
+
+        ///////sprite parado animação//////////
+
+        this.anims.create({
+            key: 'spriteparado',
+            frames: this.anims.generateFrameNumbers('parado', { start: 0, end: 4 }),
+            frameRate: 5, // Ajuste este valor para controlar a velocidade da respiração
+            repeat: -1 // Loop infinito
+        });
+        this.player.play('spriteparado');
+
 
         // Timer que solta bombas a cada 5 segundos
         this.time.addEvent({
@@ -477,7 +493,10 @@ class GameScene extends Phaser.Scene {
             this.player.setFlipX(false);
         } else {
             this.player.setVelocityX(0);
-            this.player.setTexture('frente');
+             if (this.player.body.touching.down && !this.player.anims.isPlaying) {
+                this.player.play('idleBreathingAnim');
+            // Adicione this.player.setFlipX(false); ou true se sua animação precisar.
+    }
         }
 
         if ((this.cursors.up.isDown || this.keyW.isDown || this.keySpace.isDown) && this.player.body.touching.down) {
@@ -657,9 +676,14 @@ if (this.score >= 200) {
             this.player.setTexture('morto').setScale(0.35); // Define a textura para morto para a direita
         }
 
+
+        if (this.player.anims.isPlaying) { this.player.stop(); }
+        
         // Parar a física para o jogador não continuar se mexendo
         this.player.setVelocity(0, 0);
         this.player.body.enable = false;
+
+        
 
         const somDerrota = this.sound.add('perdeu');
         somDerrota.play();
