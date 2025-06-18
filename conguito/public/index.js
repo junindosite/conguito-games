@@ -500,11 +500,17 @@ class GameScene extends Phaser.Scene {
         //////////////cursores para andar pular etc 
         if (this.cursors.left.isDown || this.keyA.isDown) {
             this.player.setVelocityX(-160);
-            this.player.setTexture('ladoE');
+            if (this.player.body.touching.down) {
+                this.player.setTexture('ladoE');
+                
+            }
             this.player.setFlipX(true);
         } else if (this.cursors.right.isDown || this.keyD.isDown) {
             this.player.setVelocityX(160);
-            this.player.setTexture('ladoD');
+            if (this.player.body.touching.down) {
+                this.player.setTexture('ladoD');
+                
+            }
             this.player.setFlipX(false);
         } else {
             this.player.setVelocityX(0);
