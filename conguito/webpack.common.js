@@ -6,7 +6,7 @@ const webpack = require('webpack');
 module.exports = {
   mode: 'development',
   entry: {
-    app: './public/index.js'
+    app: './src/index.js'
   },
   devtool: "eval-source-map",
   output: {
@@ -46,13 +46,12 @@ module.exports = {
       'WEBGL_RENDERER': JSON.stringify(true)
     }),
     new HtmlWebpackPlugin({
-      template: './public/index.html'
-
+      template: './index.html'
     }),
    new CopyPlugin({
   patterns: [
     {
-      from: path.resolve(__dirname, 'public/assets'),
+      from: path.resolve(__dirname, 'assets'),
       to: path.resolve(__dirname, 'build/assets')
     }
   ],
